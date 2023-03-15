@@ -12,14 +12,13 @@
   --clr-grey-400: hsl(236, 9%, 61%);
   --clr-grey-500: hsl(235, 19%, 35%);
 
-  --clr-dark-300: hsl(234, 39%, 85%);
+  --clr-dark-200: hsla(236, 32%, 92%, 1);
+  --clr-dark-300: hsl(235, 39%, 85%);
   --clr-dark-400: hsl(234, 11%, 52%);
   --clr-dark-500: hsl(233, 14%, 35%);
   --clr-dark-600: hsl(237, 14%, 26%);
   --clr-dark-700: hsl(235, 24%, 19%);
   --clr-dark-800: hsl(235, 21%, 11%);
-
-  --clr-dark-hover: hsl(236, 33%, 92%);
 
   --fs-body: 18px;
   --fs-heading: 40px;
@@ -27,10 +26,101 @@
 
   --clr-heading: var(--clr-grey-100);
 
-  --clr-body-light: var(--clr-grey-500);
-  --clr-strike-light: var(--clr-grey-300);
-  --clr-input-light: var(--clr-grey-300);
+  --clr-body-font: var(--clr-grey-500);
+  --clr-body-bg: var(--clr-grey-100);
+  --clr-input: var(--clr-grey-300);
+  --clr-strike: var(--clr-grey-300);
+  --clr-hover: hsl(236, 33%, 92%);
 
-  --clr-active-light: var(--clr-primary-400);
-  --clr-inactive-light: var(--clr-grey-400);
+  --clr-active: var(--clr-primary-400);
+  --clr-hover: var(--clr-grey-500);
+  --clr-inactive: var(--clr-grey-400);
+}
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+    2. Remove default margin
+  */
+* {
+  margin: 0;
+}
+/*
+    3. Allow percentage-based heights in the application
+  */
+html,
+body {
+  height: 100%;
+}
+/*
+    Typographic tweaks!
+    4. Add accessible line-height
+    5. Improve text rendering
+  */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/*
+    6. Improve media defaults
+  */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+    7. Remove built-in form typography styles
+  */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+    8. Avoid text overflows
+  */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/*
+    9. Create a root stacking context
+  */
+#root,
+#__next {
+  isolation: isolate;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  :root {
+    --clr-heading: var(--clr-grey-100);
+
+    --clr-body-font: var(--clr-dark-300);
+    --clr-body-bg: var(--clr-dark-800);
+
+    --clr-input: var(--clr-dark-300);
+    --clr-strike: var(--clr-dark-500);
+
+    --clr-hover: var(--clr-dark-200);
+    --clr-inactive: var(--clr-dark-500);
+  }
 }

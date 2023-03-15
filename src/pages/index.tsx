@@ -3,10 +3,20 @@ import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import nightIcon from "../../public/images/icon-moon.svg";
 import dayIcon from "../../public/images/icon-sun.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [toggleDarkMode, settoggleDarkMode] = useState(false);
+
+  useEffect(() => {
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    console.log(isDark);
+
+    if (isDark) {
+      settoggleDarkMode(true);
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -19,7 +29,14 @@ export default function Home() {
       <div className="container">
         <div className="input-container">
           <h1>To Do</h1>
-          {/* <Image /> */}
+          <div className="image-container">
+            <Image
+              src={toggleDarkMode ? nightIcon : dayIcon}
+              width={200}
+              height={200}
+              alt=""
+            />
+          </div>
           <input
             className="input-new-item"
             type="text"
