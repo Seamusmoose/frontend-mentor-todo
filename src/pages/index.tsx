@@ -1,9 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "@/styles/Home.module.css";
-import nightIcon from "../../public/images/icon-moon.svg";
-import dayIcon from "../../public/images/icon-sun.svg";
+import dayIcon from "../../public/icon-moon.svg";
+import nightIcon from "../../public/icon-sun.svg";
+import bgDayDark from "../../public/bg-desktop-dark.jpg";
+import bgDayLight from "../../public/bg-desktop-light.jpg";
+import bgDayMobileDark from "../../public/bg-mobile-dark.jpg";
+import bgDayMobileLight from "../../public/bg-mobile-light.jpg";
+import Xsymbol from "../../public/icon-cross.svg";
+import checkSymbol from "../../public/icon-check.svg";
 import { useState, useEffect } from "react";
 
 const exampleArr = [
@@ -14,29 +19,42 @@ const exampleArr = [
   "blahhhhhhhh",
 ];
 
-const toDoItems = exampleArr.map((i) => {
-  return (
-    <ul className="input-current" key={i}>
-      <li className="list-item flex-row">{i}</li>
-    </ul>
-  );
-});
-
 const itemCount = exampleArr.length;
 
 export default function Home() {
   const [toggleDarkMode, settoggleDarkMode] = useState(false);
   const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
-
-  const icon = dayIcon;
+  const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
+  const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
 
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (window.innerWidth >= 600) {
+      settoggleLinkLayout(true);
+    }
+
+    if (window.innerWidth <= 600) {
+      settoggleLinkLayout(false);
+    }
+
+    if (window.innerWidth >= 470) {
+      settogglebgImageLight(bgDayLight);
+    }
+
+    if (window.innerWidth <= 470) {
+      settogglebgImageLight(bgDayMobileLight);
+    }
+
+    if (isDark) {
+      settoggleIcon(nightIcon);
+    }
+
+    if (!isDark) {
+      settoggleIcon(dayIcon);
+    }
 
     window.addEventListener("resize", () => {
-      // console.log(window.innerWidth);
-
       if (window.innerWidth >= 600) {
         settoggleLinkLayout(true);
       }
@@ -44,17 +62,32 @@ export default function Home() {
       if (window.innerWidth <= 600) {
         settoggleLinkLayout(false);
       }
+
+      if (window.innerWidth >= 600) {
+        settogglebgImageLight(bgDayLight);
+        settogglebgImageDark(bgDayDark);
+      }
+
+      if (window.innerWidth <= 600) {
+        settogglebgImageLight(bgDayMobileLight);
+        settogglebgImageDark(bgDayMobileDark);
+      }
     });
 
-    if (isDark) {
-      settoggleDarkMode(true);
-      settoggleIcon(nightIcon);
-    }
+    const interval = setInterval(() => {
+      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    if (!isDark) {
-      settoggleDarkMode(false);
-      settoggleIcon(dayIcon);
-    }
+      if (isDark) {
+        settoggleIcon(nightIcon);
+        settoggleDarkMode(true);
+      }
+
+      if (!isDark) {
+        settoggleIcon(dayIcon);
+        settoggleDarkMode(false);
+      }
+    });
+    return () => clearInterval(interval);
   }, []);
   return (
     <>
@@ -64,6 +97,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div className="bg-image-wrapper">
+        {toggleDarkMode ? (
+          <Image className="image" src={togglebgImageDark} alt="" />
+        ) : (
+          <Image className="image" src={togglebgImageLight} alt="" />
+        )}
+      </div>
+
+      <div className="eg"></div>
 
       <div className="container grid-center">
         <div className="card">
@@ -85,24 +128,46 @@ export default function Home() {
               type="text"
               placeholder="add new todo"
             />
-            {toDoItems}
+            <ul className="input-current">
+              {exampleArr.map((item) => {
+                return (
+                  <li key={item} className="list-item flex-row spaceB">
+                    <div className="flex-row gap">
+                      <div className="checkSymbol grid-center">
+                        <Image src={checkSymbol} alt="" />
+                      </div>
+                      {item}
+                    </div>
+                    <div className="XSymbol grid-center">
+                      <Image src={Xsymbol} alt="" />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
             {toggleLinkLayout ? (
-              <div className="infomation-panel flex-row">
+              <div className="infomation-panel flex-row gap">
                 <div className="item-count">
                   <h2>{itemCount} items left</h2>
                 </div>
-                <div className="active-buttons flex-row">
+
+                <div>
                   <Link className="text-link" href={""}>
                     All
                   </Link>
+                </div>
+                <div>
                   <Link className="text-link" href={""}>
                     Active
                   </Link>
+                </div>
+                <div>
                   <Link className="text-link" href={""}>
                     Completed
                   </Link>
                 </div>
+
                 <div className="clear-btn">
                   <Link className="text-link" href={""}>
                     Clear completed
@@ -111,7 +176,7 @@ export default function Home() {
               </div>
             ) : (
               <>
-                <div className="infomation-panel flex-row">
+                <div className="infomation-panel flex-row spaceB">
                   <div className="item-count">
                     <h2>{itemCount} items left</h2>
                   </div>
@@ -128,7 +193,7 @@ export default function Home() {
           {!toggleLinkLayout ? (
             <div className="links-container flex-row spaceB">
               <Link className="text-link" href={""}>
-                Allllll
+                All
               </Link>
               <Link className="text-link" href={""}>
                 Active

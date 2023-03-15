@@ -2,7 +2,7 @@
   --Mobile-width: 375px;
   --Desktop-width: 1440px;
 
-  --button-bg: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
+  --button-bg: linear-gradient(192, 100%, 67%) to hsl(280, 87%, 65%);
 
   --clr-primary-400: hsl(220, 98%, 61%);
 
@@ -57,7 +57,10 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
+
 /*
     Typographic tweaks!
     4. Add accessible line-height
@@ -153,6 +156,10 @@ ul {
   display: flex;
 }
 
+.gap {
+  gap: 10px;
+}
+
 .spaceB {
   justify-content: space-between;
 }
@@ -170,27 +177,45 @@ ul {
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
+.input-current {
+  margin-top: 1rem;
+}
+
 .list-item {
   max-height: 48px;
-  border: 1px solid black;
+  border: 1px solid var(--clr-grey-200);
   background-color: var(--clr-grey-100);
+  color: var(--clr-grey-400);
+  padding: 2rem;
+}
+
+.input-new-item {
+  max-height: 48px;
   padding: 1rem;
+  margin-top: 2rem;
 }
 
 .infomation-panel {
   max-height: 48px;
-  border: 1px solid black;
+  border: 1px solid var(--clr-grey-200);
   background-color: var(--clr-grey-100);
-  padding: 1rem;
+  color: var(--clr-grey-400);
+  padding: 2rem;
 }
 
 h2 {
   font-size: var(--fs-links);
 }
 
+h1 {
+  font-size: var(--fs-heading);
+  color: var(--clr-grey-100);
+}
+
 .text-link {
   color: inherit;
   text-decoration: inherit;
+  min-width: 80px;
 }
 
 .links-container {
@@ -199,11 +224,36 @@ h2 {
 }
 
 .drop-p {
-  margin-top: 2rem;
+  margin-top: 49px;
+  color: var(--clr-grey-400);
+  font-size: var(--fs-links);
 }
 
-@media (min-width: 600px) {
-  body {
-    background-color: lightcoral;
-  }
+.bg-image-wrapper {
+  position: absolute;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.image {
+  height: 300px;
+  width: 100vw;
+}
+
+.checkSymbol {
+  border-radius: 1000px;
+  background: linear-gradient(135deg, #558cff 0%, #c058f3 100%);
+  width: 30px;
+  height: 30px;
+}
+
+.XSymbol {
+  border-radius: 1000px;
+  width: 30px;
+  height: 30px;
+}
+
+.eg {
+  background-image: url("/bg-mobile-light.jpg");
+  z-index: 122;
 }
