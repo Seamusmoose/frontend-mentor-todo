@@ -9,7 +9,7 @@ import bgDayMobileDark from "../../public/bg-mobile-dark.jpg";
 import bgDayMobileLight from "../../public/bg-mobile-light.jpg";
 import Xsymbol from "../../public/icon-cross.svg";
 import checkSymbol from "../../public/icon-check.svg";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 
 const exampleArr = [
   "Jog around the park",
@@ -19,6 +19,12 @@ const exampleArr = [
   "blahhhhhhhh",
 ];
 
+interface ITask {
+  task: string;
+  id: string;
+  completed: boolean;
+}
+
 const itemCount = exampleArr.length;
 
 export default function Home() {
@@ -27,6 +33,9 @@ export default function Home() {
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
   const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
+  const [todos, settodos] = useState<ITask[]>([]);
+  const [task, setTask] = useState("");
+  const [deletedToDos, setdeletedToDos] = useState<ITask[]>([]);
 
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -89,6 +98,30 @@ export default function Home() {
     });
     return () => clearInterval(interval);
   }, []);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTask(event.target.value);
+  };
+
+  const randomID = Math.random().toString();
+
+  const handleClick = () => {
+    settodos((prevtodos) => [
+      ...prevtodos,
+      { task: task, id: randomID, completed: false },
+    ]);
+  };
+
+  const handleDelete = (id: string) => {
+    const updatedState = todos.map((item) => {
+      if (item.id === id) {
+        return { ...item, completed: true };
+      }
+      return item;
+    });
+    settodos(updatedState);
+  };
+
   return (
     <>
       <Head>
@@ -100,13 +133,11 @@ export default function Home() {
 
       <div className="bg-image-wrapper">
         {toggleDarkMode ? (
-          <Image className="image" src={togglebgImageDark} alt="" />
+          <Image className="image" src={togglebgImageDark} alt="" priority />
         ) : (
-          <Image className="image" src={togglebgImageLight} alt="" />
+          <Image className="image" src={togglebgImageLight} alt="" priority />
         )}
       </div>
-
-      <div className="eg"></div>
 
       <div className="container grid-center">
         <div className="card">
@@ -114,35 +145,43 @@ export default function Home() {
             <div className="flex-row spaceB">
               <h1>To Do</h1>
               <div className="image-container">
-                <Image
-                  src={toggleIcon}
-                  width={50}
-                  height={50}
-                  alt=""
-                  priority
-                />
+                <Image src={toggleIcon} width={50} height={50} alt="" />
               </div>
             </div>
-            <input
-              className="input-new-item"
-              type="text"
-              placeholder="add new todo"
-            />
+            <div className="list-item flex-row spaceB gap">
+              <div className="checkSymbol grid-center">
+                <button onClick={handleClick}>
+                  <Image src={checkSymbol} alt="" />
+                </button>
+              </div>
+              <input
+                className="input-new-item"
+                type="text"
+                placeholder="add new todo"
+                onChange={handleChange}
+                value={task}
+              />
+            </div>
             <ul className="input-current">
-              {exampleArr.map((item) => {
-                return (
-                  <li key={item} className="list-item flex-row spaceB">
-                    <div className="flex-row gap">
-                      <div className="checkSymbol grid-center">
-                        <Image src={checkSymbol} alt="" />
+              {todos?.map((item) => {
+                if (item.completed === false)
+                  return (
+                    <li key={item.id} className="list-item flex-row spaceB">
+                      <div className="flex-row gap">
+                        <div className="checkSymbol grid-center">
+                          <button>
+                            <Image src={checkSymbol} alt="" />
+                          </button>
+                        </div>
+                        {item.task}
                       </div>
-                      {item}
-                    </div>
-                    <div className="XSymbol grid-center">
-                      <Image src={Xsymbol} alt="" />
-                    </div>
-                  </li>
-                );
+                      <div className="XSymbol grid-center">
+                        <button onClick={() => handleDelete(item.id)}>
+                          <Image src={Xsymbol} alt="" />
+                        </button>
+                      </div>
+                    </li>
+                  );
               })}
             </ul>
 

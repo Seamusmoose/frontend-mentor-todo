@@ -154,6 +154,7 @@ ul {
 
 .flex-row {
   display: flex;
+  align-items: center;
 }
 
 .gap {
@@ -191,8 +192,9 @@ ul {
 
 .input-new-item {
   max-height: 48px;
-  padding: 1rem;
-  margin-top: 2rem;
+  width: 100%;
+  border: none;
+  background-color: var(--clr-grey-100);
 }
 
 .infomation-panel {
@@ -211,6 +213,12 @@ h1 {
   font-size: var(--fs-heading);
   color: var(--clr-grey-100);
 }
+
+/* button {
+  background: transparent;
+  border: none !important;
+  font-size: 0;
+} */
 
 .text-link {
   color: inherit;
@@ -236,7 +244,7 @@ h1 {
 }
 
 .image {
-  height: 300px;
+  height: auto;
   width: 100vw;
 }
 
