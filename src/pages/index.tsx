@@ -101,6 +101,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {}, [toggleActive, toggleAll, toggleCompleted]);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
   };
@@ -112,7 +114,7 @@ export default function Home() {
       ...prevtodos,
       { task: task, id: randomID, completed: false },
     ]);
-    // setTask("");
+    setTask("");
   };
 
   const handleDeleteItem = (id: string) => {
@@ -267,23 +269,50 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <button className="text-link" onClick={showAll}>
+                  <button
+                    style={
+                      toggleAll
+                        ? { color: "hsl(220, 98%, 61%" }
+                        : { color: "hsl(236, 9%, 61%)" }
+                    }
+                    className="button-components"
+                    onClick={showAll}
+                  >
                     All
                   </button>
                 </div>
                 <div>
-                  <button className="text-link" onClick={showActive}>
+                  <button
+                    style={
+                      toggleActive
+                        ? { color: "hsl(220, 98%, 61%" }
+                        : { color: "hsl(236, 9%, 61%)" }
+                    }
+                    className="button-components"
+                    onClick={showActive}
+                  >
                     Active
                   </button>
                 </div>
                 <div>
-                  <button className="text-link" onClick={showCompleted}>
+                  <button
+                    style={
+                      toggleCompleted
+                        ? { color: "hsl(220, 98%, 61%" }
+                        : { color: "hsl(236, 9%, 61%)" }
+                    }
+                    className="button-components"
+                    onClick={showCompleted}
+                  >
                     Completed
                   </button>
                 </div>
 
                 <div className="clear-btn">
-                  <button className="text-link" onClick={handleClearItems}>
+                  <button
+                    className="button-components"
+                    onClick={handleClearItems}
+                  >
                     Clear completed
                   </button>
                 </div>
@@ -295,7 +324,10 @@ export default function Home() {
                     <h2>{itemCount} items left</h2>
                   </div>
                   <div className="clear-btn">
-                    <button className="text-link" onClick={handleClearItems}>
+                    <button
+                      className="button-components"
+                      onClick={handleClearItems}
+                    >
                       Clear completed
                     </button>
                   </div>
@@ -306,13 +338,37 @@ export default function Home() {
 
           {!toggleLinkLayout ? (
             <div className="links-container flex-row spaceB">
-              <button className="text-link" onClick={showAll}>
+              <button
+                style={
+                  toggleAll
+                    ? { color: "hsl(220, 98%, 61%" }
+                    : { color: "hsl(236, 9%, 61%)" }
+                }
+                className="button-components"
+                onClick={showAll}
+              >
                 All
               </button>
-              <button className="text-link" onClick={showActive}>
+              <button
+                style={
+                  toggleActive
+                    ? { color: "hsl(220, 98%, 61%" }
+                    : { color: "hsl(236, 9%, 61%)" }
+                }
+                className="button-components"
+                onClick={showActive}
+              >
                 Active
               </button>
-              <button className="text-link" onClick={showCompleted}>
+              <button
+                style={
+                  toggleCompleted
+                    ? { color: "hsl(220, 98%, 61%" }
+                    : { color: "hsl(236, 9%, 61%)" }
+                }
+                className="button-components"
+                onClick={showCompleted}
+              >
                 Completed
               </button>
             </div>
