@@ -1,14 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import dayIcon from "../../public/icon-moon.svg";
-import nightIcon from "../../public/icon-sun.svg";
-import bgDayDark from "../../public/bg-desktop-dark.jpg";
-import bgDayLight from "../../public/bg-desktop-light.jpg";
-import bgDayMobileDark from "../../public/bg-mobile-dark.jpg";
-import bgDayMobileLight from "../../public/bg-mobile-light.jpg";
-import Xsymbol from "../../public/icon-cross.svg";
-import checkSymbol from "../../public/icon-check.svg";
+import dayIcon from "/public/icon-moon.svg";
+import nightIcon from "/public/icon-sun.svg";
+import bgDayDark from "/public/bg-desktop-dark.jpg";
+import bgDayLight from "/public/bg-desktop-light.jpg";
+import bgDayMobileDark from "/public/bg-mobile-dark.jpg";
+import bgDayMobileLight from "/public/bg-mobile-light.jpg";
+import Xsymbol from "/public/icon-cross.svg";
+import checkSymbol from "/public/icon-check.svg";
 import { useState, useEffect, ChangeEvent } from "react";
 
 const exampleArr = [
