@@ -214,13 +214,11 @@ h1 {
   color: var(--clr-grey-100);
 }
 
-/* button {
+button {
   background: transparent;
   border: none !important;
-  font-size: 0;
-} */
-
-.text-link {
+}
+​ .text-link {
   color: inherit;
   text-decoration: inherit;
   min-width: 80px;

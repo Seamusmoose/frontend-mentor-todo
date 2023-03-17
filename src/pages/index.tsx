@@ -35,7 +35,9 @@ export default function Home() {
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
   const [todos, settodos] = useState<ITask[]>([]);
   const [task, setTask] = useState("");
-  const [deletedToDos, setdeletedToDos] = useState<ITask[]>([]);
+  const [toggleAll, settoggleAll] = useState(false);
+  const [toggleActive, settoggleActive] = useState(true);
+  const [toggleCompleted, settoggleCompleted] = useState(false);
 
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -110,9 +112,15 @@ export default function Home() {
       ...prevtodos,
       { task: task, id: randomID, completed: false },
     ]);
+    // setTask("");
   };
 
-  const handleDelete = (id: string) => {
+  const handleDeleteItem = (id: string) => {
+    const updatedState = todos.filter((item) => item.id !== id);
+    settodos(updatedState);
+  };
+
+  const handleCheckItem = (id: string) => {
     const updatedState = todos.map((item) => {
       if (item.id === id) {
         return { ...item, completed: true };
@@ -121,6 +129,30 @@ export default function Home() {
     });
     settodos(updatedState);
   };
+
+  const handleClearItems = () => {
+    settodos([]);
+  };
+
+  const showActive = () => {
+    settoggleActive(true);
+    settoggleAll(false);
+    settoggleCompleted(false);
+  };
+
+  const showAll = () => {
+    settoggleActive(false);
+    settoggleAll(true);
+    settoggleCompleted(false);
+  };
+
+  const showCompleted = () => {
+    settoggleActive(false);
+    settoggleAll(false);
+    settoggleCompleted(true);
+  };
+
+  console.log(todos);
 
   return (
     <>
@@ -164,7 +196,7 @@ export default function Home() {
             </div>
             <ul className="input-current">
               {todos?.map((item) => {
-                if (item.completed === false)
+                if (toggleAll) {
                   return (
                     <li key={item.id} className="list-item flex-row spaceB">
                       <div className="flex-row gap">
@@ -176,12 +208,55 @@ export default function Home() {
                         {item.task}
                       </div>
                       <div className="XSymbol grid-center">
-                        <button onClick={() => handleDelete(item.id)}>
+                        <button onClick={() => handleDeleteItem(item.id)}>
                           <Image src={Xsymbol} alt="" />
                         </button>
                       </div>
                     </li>
                   );
+                }
+                if (toggleActive) {
+                  if (item.completed === false) {
+                    return (
+                      <li key={item.id} className="list-item flex-row spaceB">
+                        <div className="flex-row gap">
+                          <div className="checkSymbol grid-center">
+                            <button onClick={() => handleCheckItem(item.id)}>
+                              <Image src={checkSymbol} alt="" />
+                            </button>
+                          </div>
+                          {item.task}
+                        </div>
+                        <div className="XSymbol grid-center">
+                          <button onClick={() => handleDeleteItem(item.id)}>
+                            <Image src={Xsymbol} alt="" />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  }
+                }
+                if (toggleCompleted) {
+                  if (item.completed === true) {
+                    return (
+                      <li key={item.id} className="list-item flex-row spaceB">
+                        <div className="flex-row gap">
+                          <div className="checkSymbol grid-center">
+                            <button onClick={() => handleCheckItem(item.id)}>
+                              <Image src={checkSymbol} alt="" />
+                            </button>
+                          </div>
+                          {item.task}
+                        </div>
+                        <div className="XSymbol grid-center">
+                          <button onClick={() => handleDeleteItem(item.id)}>
+                            <Image src={Xsymbol} alt="" />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  }
+                }
               })}
             </ul>
 
@@ -192,25 +267,25 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <Link className="text-link" href={""}>
+                  <button className="text-link" onClick={showAll}>
                     All
-                  </Link>
+                  </button>
                 </div>
                 <div>
-                  <Link className="text-link" href={""}>
+                  <button className="text-link" onClick={showActive}>
                     Active
-                  </Link>
+                  </button>
                 </div>
                 <div>
-                  <Link className="text-link" href={""}>
+                  <button className="text-link" onClick={showCompleted}>
                     Completed
-                  </Link>
+                  </button>
                 </div>
 
                 <div className="clear-btn">
-                  <Link className="text-link" href={""}>
+                  <button className="text-link" onClick={handleClearItems}>
                     Clear completed
-                  </Link>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -220,9 +295,9 @@ export default function Home() {
                     <h2>{itemCount} items left</h2>
                   </div>
                   <div className="clear-btn">
-                    <Link className="text-link" href={""}>
+                    <button className="text-link" onClick={handleClearItems}>
                       Clear completed
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </>
@@ -231,15 +306,15 @@ export default function Home() {
 
           {!toggleLinkLayout ? (
             <div className="links-container flex-row spaceB">
-              <Link className="text-link" href={""}>
+              <button className="text-link" onClick={showAll}>
                 All
-              </Link>
-              <Link className="text-link" href={""}>
+              </button>
+              <button className="text-link" onClick={showActive}>
                 Active
-              </Link>
-              <Link className="text-link" href={""}>
+              </button>
+              <button className="text-link" onClick={showCompleted}>
                 Completed
-              </Link>
+              </button>
             </div>
           ) : null}
 
