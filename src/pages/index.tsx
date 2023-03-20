@@ -1,14 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import dayIcon from "/public/icon-moon.svg";
-import nightIcon from "/public/icon-sun.svg";
 import bgDayDark from "/public/bg-desktop-dark.jpg";
 import bgDayLight from "/public/bg-desktop-light.jpg";
 import bgDayMobileDark from "/public/bg-mobile-dark.jpg";
 import bgDayMobileLight from "/public/bg-mobile-light.jpg";
-import Xsymbol from "/public/icon-cross.svg";
-import checkSymbol from "/public/icon-check.svg";
+import Xsymbol from "/public/images/icon-cross.svg";
+import checkSymbol from "/public/images/icon-check.svg";
+import dayIcon from "/public/images/icon-moon.svg";
+import nightIcon from "/public/images/icon-sun.svg";
 import { useState, useEffect, ChangeEvent } from "react";
 
 const exampleArr = [
@@ -25,8 +25,6 @@ interface ITask {
   completed: boolean;
 }
 
-const itemCount = exampleArr.length;
-
 export default function Home() {
   const [toggleDarkMode, settoggleDarkMode] = useState(false);
   const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
@@ -38,6 +36,8 @@ export default function Home() {
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
+
+  const itemCount = todos.length;
 
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -110,11 +110,15 @@ export default function Home() {
   const randomID = Math.random().toString();
 
   const handleClick = () => {
-    settodos((prevtodos) => [
-      ...prevtodos,
-      { task: task, id: randomID, completed: false },
-    ]);
-    setTask("");
+    if (task === "") {
+      alert("please fill in task");
+    } else {
+      settodos((prevtodos) => [
+        ...prevtodos,
+        { task: task, id: randomID, completed: false },
+      ]);
+      setTask("");
+    }
   };
 
   const handleDeleteItem = (id: string) => {
@@ -185,7 +189,7 @@ export default function Home() {
             <div className="list-item flex-row spaceB gap">
               <div className="checkSymbol grid-center">
                 <button onClick={handleClick}>
-                  <Image src={checkSymbol} alt="" />
+                  {/* <Image src={checkSymbol} alt="" /> */}
                 </button>
               </div>
               <input
@@ -202,12 +206,33 @@ export default function Home() {
                   return (
                     <li key={item.id} className="list-item flex-row spaceB">
                       <div className="flex-row gap">
-                        <div className="checkSymbol grid-center">
+                        <div
+                          style={
+                            item.completed
+                              ? {
+                                  background:
+                                    "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
+                                }
+                              : { background: "none" }
+                          }
+                          className="checkSymbol grid-center"
+                        >
                           <button>
                             <Image src={checkSymbol} alt="" />
                           </button>
                         </div>
-                        {item.task}
+                        <div
+                          style={
+                            item.completed
+                              ? {
+                                  textDecoration: "line-through",
+                                  color: "hsl(233, 11%, 84%)",
+                                }
+                              : {}
+                          }
+                        >
+                          {item.task}
+                        </div>
                       </div>
                       <div className="XSymbol grid-center">
                         <button onClick={() => handleDeleteItem(item.id)}>
@@ -227,7 +252,18 @@ export default function Home() {
                               <Image src={checkSymbol} alt="" />
                             </button>
                           </div>
-                          {item.task}
+                          <div
+                            style={
+                              item.completed
+                                ? {
+                                    textDecoration: "line-through",
+                                    color: "hsl(233, 11%, 84%)",
+                                  }
+                                : {}
+                            }
+                          >
+                            {item.task}
+                          </div>
                         </div>
                         <div className="XSymbol grid-center">
                           <button onClick={() => handleDeleteItem(item.id)}>
@@ -243,12 +279,33 @@ export default function Home() {
                     return (
                       <li key={item.id} className="list-item flex-row spaceB">
                         <div className="flex-row gap">
-                          <div className="checkSymbol grid-center">
+                          <div
+                            style={
+                              item.completed
+                                ? {
+                                    background:
+                                      "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
+                                  }
+                                : { background: "none" }
+                            }
+                            className="checkSymbol grid-center"
+                          >
                             <button onClick={() => handleCheckItem(item.id)}>
                               <Image src={checkSymbol} alt="" />
                             </button>
                           </div>
-                          {item.task}
+                          <div
+                            style={
+                              item.completed
+                                ? {
+                                    textDecoration: "line-through",
+                                    color: "hsl(233, 11%, 84%)",
+                                  }
+                                : {}
+                            }
+                          >
+                            {item.task}
+                          </div>
                         </div>
                         <div className="XSymbol grid-center">
                           <button onClick={() => handleDeleteItem(item.id)}>

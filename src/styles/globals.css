@@ -249,18 +249,14 @@ button {
 
 .checkSymbol {
   border-radius: 1000px;
-  background: linear-gradient(135deg, #558cff 0%, #c058f3 100%);
+  /* background: linear-gradient(135deg, #558cff 0%, #c058f3 100%); */
   width: 30px;
   height: 30px;
+  border: 1px solid var(--clr-grey-300);
 }
 
 .XSymbol {
   border-radius: 1000px;
   width: 30px;
   height: 30px;
-}
-
-.eg {
-  background-image: url("/bg-mobile-light.jpg");
-  z-index: 122;
 }
