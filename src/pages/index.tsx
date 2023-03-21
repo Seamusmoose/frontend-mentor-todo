@@ -39,67 +39,67 @@ export default function Home() {
 
   const itemCount = todos.length;
 
-  useEffect(() => {
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (window.innerWidth >= 600) {
-      settoggleLinkLayout(true);
-    }
+  // useEffect(() => {
+  //   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  //   if (window.innerWidth >= 600) {
+  //     settoggleLinkLayout(true);
+  //   }
 
-    if (window.innerWidth <= 600) {
-      settoggleLinkLayout(false);
-    }
+  //   if (window.innerWidth <= 600) {
+  //     settoggleLinkLayout(false);
+  //   }
 
-    if (window.innerWidth >= 470) {
-      settogglebgImageLight(bgDayLight);
-    }
+  //   if (window.innerWidth >= 470) {
+  //     settogglebgImageLight(bgDayLight);
+  //   }
 
-    if (window.innerWidth <= 470) {
-      settogglebgImageLight(bgDayMobileLight);
-    }
+  //   if (window.innerWidth <= 470) {
+  //     settogglebgImageLight(bgDayMobileLight);
+  //   }
 
-    if (isDark) {
-      settoggleIcon(nightIcon);
-    }
+  //   if (isDark) {
+  //     settoggleIcon(nightIcon);
+  //   }
 
-    if (!isDark) {
-      settoggleIcon(dayIcon);
-    }
+  //   if (!isDark) {
+  //     settoggleIcon(dayIcon);
+  //   }
 
-    window.addEventListener("resize", () => {
-      if (window.innerWidth >= 600) {
-        settoggleLinkLayout(true);
-      }
+  //   window.addEventListener("resize", () => {
+  //     if (window.innerWidth >= 600) {
+  //       settoggleLinkLayout(true);
+  //     }
 
-      if (window.innerWidth <= 600) {
-        settoggleLinkLayout(false);
-      }
+  //     if (window.innerWidth <= 600) {
+  //       settoggleLinkLayout(false);
+  //     }
 
-      if (window.innerWidth >= 600) {
-        settogglebgImageLight(bgDayLight);
-        settogglebgImageDark(bgDayDark);
-      }
+  //     if (window.innerWidth >= 600) {
+  //       settogglebgImageLight(bgDayLight);
+  //       settogglebgImageDark(bgDayDark);
+  //     }
 
-      if (window.innerWidth <= 600) {
-        settogglebgImageLight(bgDayMobileLight);
-        settogglebgImageDark(bgDayMobileDark);
-      }
-    });
+  //     if (window.innerWidth <= 600) {
+  //       settogglebgImageLight(bgDayMobileLight);
+  //       settogglebgImageDark(bgDayMobileDark);
+  //     }
+  //   });
 
-    const interval = setInterval(() => {
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  //   const interval = setInterval(() => {
+  //     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-      if (isDark) {
-        settoggleIcon(nightIcon);
-        settoggleDarkMode(true);
-      }
+  //     if (isDark) {
+  //       settoggleIcon(nightIcon);
+  //       settoggleDarkMode(true);
+  //     }
 
-      if (!isDark) {
-        settoggleIcon(dayIcon);
-        settoggleDarkMode(false);
-      }
-    });
-    return () => clearInterval(interval);
-  }, []);
+  //     if (!isDark) {
+  //       settoggleIcon(dayIcon);
+  //       settoggleDarkMode(false);
+  //     }
+  //   });
+  //   return () => clearInterval(interval);
+  // }, []);
 
   useEffect(() => {}, [toggleActive, toggleAll, toggleCompleted]);
 
@@ -113,6 +113,10 @@ export default function Home() {
     if (task === "") {
       alert("please fill in task");
     } else {
+
+      // setTimeout(() => {
+        
+      // }, [1000]);
       settodos((prevtodos) => [
         ...prevtodos,
         { task: task, id: randomID, completed: false },
