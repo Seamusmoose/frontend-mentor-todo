@@ -1,11 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
-import Xsymbol from "/public/images/icon-cross.svg";
-import checkSymbol from "/public/images/icon-check.svg";
 import { useTheme } from "@/components/hooks/useTheme";
-
 import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
 import { InputForm } from "@/components/InputForm";
+import { InputList } from "@/components/InputList";
 
 interface ITask {
   task: string;
@@ -25,7 +23,6 @@ export default function Home() {
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
   const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
-  const [toggleChecked, settoggleChecked] = useState(false);
 
   const itemCount = todosFiltered.length;
 
@@ -121,14 +118,6 @@ export default function Home() {
     settoggleCompleted(true);
   };
 
-  const ButtonCheckStyling = (isItemCompleted: boolean): CSSProperties => {
-    return isItemCompleted
-      ? {
-          background: "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
-        }
-      : { background: "none" };
-  };
-
   return (
     <>
       <Head>
@@ -164,104 +153,37 @@ export default function Home() {
 
             <ul className="input-current">
               {todos?.map((item) => {
-                const isItemCompleted = item.completed;
                 if (toggleAll) {
                   return (
-                    <li key={item.id} className="list-item flex-row spaceB">
-                      <div className="flex-row gap">
-                        <div
-                          style={ButtonCheckStyling(isItemCompleted)}
-                          className="checkSymbol grid-center"
-                        >
-                          <button onClick={() => handleCheckItem(item.id)}>
-                            <Image src={checkSymbol} alt="" />
-                          </button>
-                        </div>
-                        <div
-                          style={
-                            item.completed
-                              ? {
-                                  textDecoration: "line-through",
-                                  color: "hsl(233, 11%, 84%)",
-                                }
-                              : {}
-                          }
-                        >
-                          {item.task}
-                        </div>
-                      </div>
-                      <div className="XSymbol grid-center">
-                        <button onClick={() => handleDeleteItem(item.id)}>
-                          <Image src={Xsymbol} alt="" />
-                        </button>
-                      </div>
-                    </li>
+                    <InputList
+                      item={item}
+                      key={item.id}
+                      handleCheckItem={handleCheckItem}
+                      handleDeleteItem={handleDeleteItem}
+                    />
                   );
                 }
                 if (toggleActive) {
                   if (item.completed === false) {
                     return (
-                      <li key={item.id} className="list-item flex-row spaceB">
-                        <div className="flex-row gap">
-                          <div className="checkSymbol grid-center">
-                            <button onClick={() => handleCheckItem(item.id)}>
-                              <Image src={checkSymbol} alt="" />
-                            </button>
-                          </div>
-                          <div
-                            style={
-                              item.completed
-                                ? {
-                                    textDecoration: "line-through",
-                                    color: "hsl(233, 11%, 84%)",
-                                  }
-                                : {}
-                            }
-                          >
-                            {item.task}
-                          </div>
-                        </div>
-                        <div className="XSymbol grid-center">
-                          <button onClick={() => handleDeleteItem(item.id)}>
-                            <Image src={Xsymbol} alt="" />
-                          </button>
-                        </div>
-                      </li>
+                      <InputList
+                        item={item}
+                        key={item.id}
+                        handleCheckItem={handleCheckItem}
+                        handleDeleteItem={handleDeleteItem}
+                      />
                     );
                   }
                 }
                 if (toggleCompleted) {
                   if (item.completed === true) {
                     return (
-                      <li key={item.id} className="list-item flex-row spaceB">
-                        <div className="flex-row gap">
-                          <div
-                            style={ButtonCheckStyling(isItemCompleted)}
-                            className="checkSymbol grid-center"
-                          >
-                            <button onClick={() => handleCheckItem(item.id)}>
-                              <Image src={checkSymbol} alt="" />
-                            </button>
-                          </div>
-                          <div
-                            style={
-                              item.completed
-                                ? {
-                                    textDecoration: "line-through",
-                                    color: "hsl(233, 11%, 84%)",
-                                  }
-                                : {}
-                            }
-                          >
-                            {item.task}
-                          </div>
-                        </div>
-                        <div className="XSymbol grid-center">
-                          <button onClick={() => handleDeleteItem(item.id)}>
-                            <Image src={Xsymbol} alt="" />
-                          </button>
-                        </div>
-                      </li>
+                      <InputList
+                        item={item}
+                        key={item.id}
+                        handleCheckItem={handleCheckItem}
+                        handleDeleteItem={handleDeleteItem}
+                      />
                     );
                   }
                 }
