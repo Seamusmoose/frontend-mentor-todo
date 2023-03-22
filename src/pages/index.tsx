@@ -1,23 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
-import bgDayDark from "/public/bg-desktop-dark.jpg";
-import bgDayLight from "/public/bg-desktop-light.jpg";
-import bgDayMobileDark from "/public/bg-mobile-dark.jpg";
-import bgDayMobileLight from "/public/bg-mobile-light.jpg";
 import Xsymbol from "/public/images/icon-cross.svg";
 import checkSymbol from "/public/images/icon-check.svg";
-import dayIcon from "/public/images/icon-moon.svg";
-import nightIcon from "/public/images/icon-sun.svg";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useTheme } from "@/components/hooks/useTheme";
 
-const exampleArr = [
-  "Jog around the park",
-  "meditation",
-  "blahh",
-  "blahhhh",
-  "blahhhhhhhh",
-];
+import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
+import { InputForm } from "@/components/InputForm";
 
 interface ITask {
   task: string;
@@ -26,101 +14,59 @@ interface ITask {
 }
 
 export default function Home() {
-  const [toggleDarkMode, settoggleDarkMode] = useState(false);
-  const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
-  const [toggleIcon, settoggleIcon] = useState(dayIcon);
-  const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
-  const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
-  const [todos, settodos] = useState<ITask[]>([]);
   const [task, setTask] = useState("");
+  const [todos, settodos] = useState<ITask[]>([]);
+  const [todosFiltered, settodosFiltered] = useState<ITask[]>(todos);
+
+  const { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark } =
+    useTheme();
+
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
+  const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
+  const [toggleChecked, settoggleChecked] = useState(false);
 
-  const itemCount = todos.length;
+  const itemCount = todosFiltered.length;
 
-  // useEffect(() => {
-  //   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  //   if (window.innerWidth >= 600) {
-  //     settoggleLinkLayout(true);
-  //   }
+  // monitors width and height for menu change
+  useEffect(() => {
+    if (window.innerWidth >= 600) {
+      settoggleLinkLayout(true);
+    }
 
-  //   if (window.innerWidth <= 600) {
-  //     settoggleLinkLayout(false);
-  //   }
+    if (window.innerWidth <= 600) {
+      settoggleLinkLayout(false);
 
-  //   if (window.innerWidth >= 470) {
-  //     settogglebgImageLight(bgDayLight);
-  //   }
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 600) {
+          settoggleLinkLayout(true);
+        }
 
-  //   if (window.innerWidth <= 470) {
-  //     settogglebgImageLight(bgDayMobileLight);
-  //   }
+        if (window.innerWidth <= 600) {
+          settoggleLinkLayout(false);
+        }
+      });
+    }
+  }, []);
 
-  //   if (isDark) {
-  //     settoggleIcon(nightIcon);
-  //   }
-
-  //   if (!isDark) {
-  //     settoggleIcon(dayIcon);
-  //   }
-
-  //   window.addEventListener("resize", () => {
-  //     if (window.innerWidth >= 600) {
-  //       settoggleLinkLayout(true);
-  //     }
-
-  //     if (window.innerWidth <= 600) {
-  //       settoggleLinkLayout(false);
-  //     }
-
-  //     if (window.innerWidth >= 600) {
-  //       settogglebgImageLight(bgDayLight);
-  //       settogglebgImageDark(bgDayDark);
-  //     }
-
-  //     if (window.innerWidth <= 600) {
-  //       settogglebgImageLight(bgDayMobileLight);
-  //       settogglebgImageDark(bgDayMobileDark);
-  //     }
-  //   });
-
-  //   const interval = setInterval(() => {
-  //     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  //     if (isDark) {
-  //       settoggleIcon(nightIcon);
-  //       settoggleDarkMode(true);
-  //     }
-
-  //     if (!isDark) {
-  //       settoggleIcon(dayIcon);
-  //       settoggleDarkMode(false);
-  //     }
-  //   });
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  useEffect(() => {}, [toggleActive, toggleAll, toggleCompleted]);
+  // monitors darkMode
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
   };
 
-  const randomID = Math.random().toString();
-
   const handleClick = () => {
+    const randomID = Math.random().toString();
+
     if (task === "") {
       alert("please fill in task");
     } else {
-
-      // setTimeout(() => {
-        
-      // }, [1000]);
       settodos((prevtodos) => [
         ...prevtodos,
         { task: task, id: randomID, completed: false },
       ]);
+
       setTask("");
     }
   };
@@ -137,7 +83,20 @@ export default function Home() {
       }
       return item;
     });
+
     settodos(updatedState);
+  };
+
+  // console.log(todos);
+
+  const filterByActive = () => {
+    const filteredbyActive = todos.filter((item) => item.completed === false);
+    settodosFiltered(filteredbyActive);
+  };
+
+  const filteByCompleted = () => {
+    const filteredbyCompleted = todos.filter((item) => item.completed === true);
+    settodos(filteredbyCompleted);
   };
 
   const handleClearItems = () => {
@@ -162,7 +121,13 @@ export default function Home() {
     settoggleCompleted(true);
   };
 
-  console.log(todos);
+  const ButtonCheckStyling = (isItemCompleted: boolean): CSSProperties => {
+    return isItemCompleted
+      ? {
+          background: "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
+        }
+      : { background: "none" };
+  };
 
   return (
     <>
@@ -190,38 +155,25 @@ export default function Home() {
                 <Image src={toggleIcon} width={50} height={50} alt="" />
               </div>
             </div>
-            <div className="list-item flex-row spaceB gap">
-              <div className="checkSymbol grid-center">
-                <button onClick={handleClick}>
-                  {/* <Image src={checkSymbol} alt="" /> */}
-                </button>
-              </div>
-              <input
-                className="input-new-item"
-                type="text"
-                placeholder="add new todo"
-                onChange={handleChange}
-                value={task}
-              />
-            </div>
+
+            <InputForm
+              task={task}
+              handleChange={handleChange}
+              handleClick={handleClick}
+            />
+
             <ul className="input-current">
               {todos?.map((item) => {
+                const isItemCompleted = item.completed;
                 if (toggleAll) {
                   return (
                     <li key={item.id} className="list-item flex-row spaceB">
                       <div className="flex-row gap">
                         <div
-                          style={
-                            item.completed
-                              ? {
-                                  background:
-                                    "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
-                                }
-                              : { background: "none" }
-                          }
+                          style={ButtonCheckStyling(isItemCompleted)}
                           className="checkSymbol grid-center"
                         >
-                          <button>
+                          <button onClick={() => handleCheckItem(item.id)}>
                             <Image src={checkSymbol} alt="" />
                           </button>
                         </div>
@@ -284,14 +236,7 @@ export default function Home() {
                       <li key={item.id} className="list-item flex-row spaceB">
                         <div className="flex-row gap">
                           <div
-                            style={
-                              item.completed
-                                ? {
-                                    background:
-                                      "linear-gradient(135deg, #558cff 0%, #c058f3 100%)",
-                                  }
-                                : { background: "none" }
-                            }
+                            style={ButtonCheckStyling(isItemCompleted)}
                             className="checkSymbol grid-center"
                           >
                             <button onClick={() => handleCheckItem(item.id)}>
@@ -417,7 +362,7 @@ export default function Home() {
                     : { color: "hsl(236, 9%, 61%)" }
                 }
                 className="button-components"
-                onClick={showActive}
+                onClick={filterByActive}
               >
                 Active
               </button>
@@ -428,7 +373,7 @@ export default function Home() {
                     : { color: "hsl(236, 9%, 61%)" }
                 }
                 className="button-components"
-                onClick={showCompleted}
+                onClick={filteByCompleted}
               >
                 Completed
               </button>
@@ -442,4 +387,43 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+{
+  /* <ul className="input-current">
+              {todos?.map((item) => {
+                const isItemCompleted = item.completed;
+                return (
+                  <li key={item.id} className="list-item flex-row spaceB">
+                    <div className="flex-row gap">
+                      <div
+                        style={ButtonCheckStyling(isItemCompleted)}
+                        className="checkSymbol grid-center"
+                      >
+                        <button onClick={() => handleCheckItem(item.id)}>
+                          <Image src={checkSymbol} alt="" />
+                        </button>
+                      </div>
+                      <div
+                        style={
+                          item.completed
+                            ? {
+                                textDecoration: "line-through",
+                                color: "hsl(233, 11%, 84%)",
+                              }
+                            : {}
+                        }
+                      >
+                        {item.task}
+                      </div>
+                    </div>
+                    <div className="XSymbol grid-center">
+                      <button onClick={() => handleDeleteItem(item.id)}>
+                        <Image src={Xsymbol} alt="" />
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul> */
 }

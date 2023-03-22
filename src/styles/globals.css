@@ -35,6 +35,14 @@
   --clr-active: var(--clr-primary-400);
   --clr-hover: var(--clr-grey-500);
   --clr-inactive: var(--clr-grey-400);
+
+  --background: white;
+  --foreground: black;
+}
+
+[data-theme="dark"] {
+  --background: black;
+  --foreground: white;
 }
 
 /*
