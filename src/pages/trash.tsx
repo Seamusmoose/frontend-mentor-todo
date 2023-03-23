@@ -1,69 +1,55 @@
+import React, { FC } from "react";
 
+type FilterButtonProps = {
+  active: boolean;
+  text: string;
+  onClick: () => void;
+};
 
-export const trash = () => {
+const FilterButton: FC<FilterButtonProps> = ({ active, text, onClick }) => {
   return (
-    <div>trash</div>
-  )
-}
+    <button
+      style={{ color: active ? "hsl(220, 98%, 61%)" : "hsl(236, 9%, 61%)" }}
+      className="button-components"
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  );
+};
 
-  // useEffect(() => {
-  //   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  //   if (window.innerWidth >= 600) {
-  //     settoggleLinkLayout(true);
-  //   }
+type FilterButtonsProps = {
+  toggleAll: boolean;
+  toggleActive: boolean;
+  toggleCompleted: boolean;
+  handleFilterClick: (filter: string) => void;
+};
 
-  //   if (window.innerWidth <= 600) {
-  //     settoggleLinkLayout(false);
-  //   }
+const FilterButtons: FC<FilterButtonsProps> = ({
+  toggleAll,
+  toggleActive,
+  toggleCompleted,
+  handleFilterClick,
+}) => {
+  return (
+    <>
+      <FilterButton
+        active={toggleAll}
+        text="All"
+        onClick={() => handleFilterClick("all")}
+      />
+      <FilterButton
+        active={toggleActive}
+        text="Active"
+        onClick={() => handleFilterClick("active")}
+      />
+      <FilterButton
+        active={toggleCompleted}
+        text="Completed"
+        onClick={() => handleFilterClick("completed")}
+      />
+    </>
+  );
+};
 
-  //   if (window.innerWidth >= 470) {
-  //     settogglebgImageLight(bgDayLight);
-  //   }
-
-  //   if (window.innerWidth <= 470) {
-  //     settogglebgImageLight(bgDayMobileLight);
-  //   }
-
-  //   if (isDark) {
-  //     settoggleIcon(nightIcon);
-  //   }
-
-  //   if (!isDark) {
-  //     settoggleIcon(dayIcon);
-  //   }
-
-  //   window.addEventListener("resize", () => {
-  //     if (window.innerWidth >= 600) {
-  //       settoggleLinkLayout(true);
-  //     }
-
-  //     if (window.innerWidth <= 600) {
-  //       settoggleLinkLayout(false);
-  //     }
-
-  //     if (window.innerWidth >= 600) {
-  //       settogglebgImageLight(bgDayLight);
-  //       settogglebgImageDark(bgDayDark);
-  //     }
-
-  //     if (window.innerWidth <= 600) {
-  //       settogglebgImageLight(bgDayMobileLight);
-  //       settogglebgImageDark(bgDayMobileDark);
-  //     }
-  //   });
-
-  //   const interval = setInterval(() => {
-  //     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  //     if (isDark) {
-  //       settoggleIcon(nightIcon);
-  //       settoggleDarkMode(true);
-  //     }
-
-  //     if (!isDark) {
-  //       settoggleIcon(dayIcon);
-  //       settoggleDarkMode(false);
-  //     }
-  //   });
-  //   return () => clearInterval(interval);
-  // }, []);
+export default FilterButtons;
