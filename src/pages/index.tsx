@@ -5,36 +5,26 @@ import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
 import { InputForm } from "@/components/InputForm";
 import { InputList } from "@/components/InputList";
 import { useTheme } from "next-themes";
-
-interface ITask {
-  task: string;
-  id: string;
-  completed: boolean;
-}
+import { useWHMonitor } from "@/components/hooks/useWHMonitor";
+import { ToDoItem } from "@/components/models/interfaces";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [task, setTask] = useState("");
-  const [todos, settodos] = useState<ITask[]>([]);
-  const [todosFiltered, settodosFiltered] = useState<ITask[]>(todos);
-
-  const { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark } =
-    useModeToggle();
+  const [todos, settodos] = useState<ToDoItem[]>([]);
+  const [todosFiltered, settodosFiltered] = useState<ToDoItem[]>(todos);
+  const { toggleLinkLayout } = useWHMonitor();
+  const {
+    toggleDarkMode,
+    toggleIcon,
+    togglebgImageLight,
+    togglebgImageDark,
+    backgroundColours,
+  } = useModeToggle();
 
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
-  const [toggleLinkLayout, settoggleLinkLayout] = useState(false);
-
-  // monitors width and height for menu change
-  useEffect(() => {
-    function handleResize() {
-      settoggleLinkLayout(window.innerWidth >= 600);
-    }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -97,6 +87,8 @@ export default function Home() {
         key={item.id}
         handleCheckItem={handleCheckItem}
         handleDeleteItem={handleDeleteItem}
+        backgroundColours={backgroundColours}
+
       />
     ));
 
@@ -138,7 +130,7 @@ export default function Home() {
             <ul className="input-current">{filteredItems}</ul>
 
             {toggleLinkLayout ? (
-              <div className="infomation-panel flex-row gap">
+              <div className="infomation-panel flex-row gap t">
                 <div className="item-count">
                   <h2>{itemCount} items left</h2>
                 </div>

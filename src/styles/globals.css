@@ -129,24 +129,6 @@ ul {
   isolation: isolate;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  :root {
-    --clr-heading: var(--clr-grey-100);
-
-    --clr-body-font: var(--clr-dark-300);
-    --clr-body-bg: var(--clr-dark-800);
-
-    --clr-input: var(--clr-dark-300);
-    --clr-strike: var(--clr-dark-500);
-
-    --clr-hover: var(--clr-dark-200);
-    --clr-inactive: var(--clr-dark-500);
-  }
-}
-
 /* utilities */
 
 .grid-center {
@@ -188,6 +170,10 @@ ul {
 
 .input-current {
   margin-top: 1rem;
+}
+
+.t {
+  background-color: red;
 }
 
 .list-item {

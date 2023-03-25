@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
 import bgDayDark from "/public/bg-desktop-dark.jpg";
 import bgDayLight from "/public/bg-desktop-light.jpg";
 import bgDayMobileDark from "/public/bg-mobile-dark.jpg";
@@ -7,12 +6,22 @@ import bgDayMobileLight from "/public/bg-mobile-light.jpg";
 import nightIcon from "/public/images/icon-moon.svg";
 import dayIcon from "/public/images/icon-sun.svg";
 
+interface backgroundColour {
+  bgColor: string;
+  containerColor: string;
+  textColor: string;
+}
+
 export const useModeToggle = () => {
   const [toggleDarkMode, settoggleDarkMode] = useState(false);
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
   const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
-  const { theme, setTheme } = useTheme();
+  const [backgroundColours, setbackgroundColours] = useState<backgroundColour>({
+    bgColor: "",
+    containerColor: "",
+    textColor: "",
+  });
 
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -25,12 +34,17 @@ export const useModeToggle = () => {
       settogglebgImageLight(bgDayMobileLight);
     }
 
-    if (toggleDarkMode) {
-      settoggleIcon(nightIcon);
+    if (isDark) {
+      settoggleIcon(dayIcon);
+      setbackgroundColours({
+        bgColor: "hsla(235, 21%, 11%, 1)",
+        containerColor: "hsla(235, 25%, 19%, 1)",
+        textColor: "hsla(235, 39%, 85%, 1)",
+      });
     }
 
-    if (!toggleDarkMode) {
-      settoggleIcon(dayIcon);
+    if (!isDark) {
+      settoggleIcon(nightIcon);
     }
 
     window.addEventListener("resize", () => {
@@ -64,5 +78,5 @@ export const useModeToggle = () => {
     return () => clearInterval(interval);
   }, [toggleDarkMode]);
 
-  return { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark };
+  return { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark, backgroundColours };
 };
