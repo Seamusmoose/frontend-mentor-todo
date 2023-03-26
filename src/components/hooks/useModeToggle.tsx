@@ -10,6 +10,7 @@ interface backgroundColour {
   bgColor: string;
   containerColor: string;
   textColor: string;
+  borderColor: string;
 }
 
 export const useModeToggle = () => {
@@ -21,30 +22,16 @@ export const useModeToggle = () => {
     bgColor: "",
     containerColor: "",
     textColor: "",
+    borderColor: "",
   });
 
   useEffect(() => {
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
     if (window.innerWidth >= 470) {
       settogglebgImageLight(bgDayLight);
     }
 
     if (window.innerWidth <= 470) {
       settogglebgImageLight(bgDayMobileLight);
-    }
-
-    if (isDark) {
-      settoggleIcon(dayIcon);
-      setbackgroundColours({
-        bgColor: "hsla(235, 21%, 11%, 1)",
-        containerColor: "hsla(235, 25%, 19%, 1)",
-        textColor: "hsla(235, 39%, 85%, 1)",
-      });
-    }
-
-    if (!isDark) {
-      settoggleIcon(nightIcon);
     }
 
     window.addEventListener("resize", () => {
@@ -68,15 +55,34 @@ export const useModeToggle = () => {
       if (isDark) {
         settoggleIcon(nightIcon);
         settoggleDarkMode(true);
+        setbackgroundColours({
+          bgColor: "hsla(235, 21%, 11%, 1)",
+          containerColor: "hsla(235, 25%, 19%, 1)",
+          textColor: "hsla(235, 39%, 85%, 1)",
+          borderColor: "hsla(235, 14%, 26%, 1) ",
+        });
       }
 
       if (isLight) {
         settoggleIcon(dayIcon);
         settoggleDarkMode(false);
+
+        setbackgroundColours({
+          bgColor: "hsla(0, 0%, 100%, 1)",
+          containerColor: "hsla(0, 0%, 100%, 1)",
+          textColor: "hsla(235, 19%, 35%, 1)",
+          borderColor: "hsla(236, 32%, 92%, 1)"
+        });
       }
     });
     return () => clearInterval(interval);
-  }, [toggleDarkMode]);
+  }, [settoggleDarkMode]);
 
-  return { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark, backgroundColours };
+  return {
+    toggleDarkMode,
+    toggleIcon,
+    togglebgImageLight,
+    togglebgImageDark,
+    backgroundColours,
+  };
 };

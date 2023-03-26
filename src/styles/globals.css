@@ -172,10 +172,6 @@ ul {
   margin-top: 1rem;
 }
 
-.t {
-  background-color: red;
-}
-
 .list-item {
   max-height: 48px;
   border: 1px solid var(--clr-grey-200);

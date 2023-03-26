@@ -1,7 +1,21 @@
-import React, { CSSProperties } from "react";
+import React, {
+  CSSProperties,
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+} from "react";
 import Xsymbol from "/public/images/icon-cross.svg";
 import checkSymbol from "/public/images/icon-check.svg";
 import Image from "next/image";
+import { useRef } from "react";
+
+interface backgroundColour {
+  bgColor: string;
+  containerColor: string;
+  textColor: string;
+  borderColor: string;
+}
 
 interface ITask {
   task: string;
@@ -14,12 +28,20 @@ interface InputListProps {
   handleCheckItem: (id: string) => void;
   key: string;
   item: ITask;
+  index: number;
+  backgroundColours: backgroundColour;
+  setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
+  setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
 }
 
-export const InputList = ({
+export const InputItem = ({
   item,
+  index,
+  backgroundColours,
   handleCheckItem,
   handleDeleteItem,
+  setdragEventItem,
+  setdragEventOverItem,
 }: InputListProps): JSX.Element => {
   const isItemCompleted = item.completed;
 
@@ -40,9 +62,23 @@ export const InputList = ({
       : {};
   };
 
+  const DragItem = useRef<any>(null);
+  const DragOverItem = useRef<any>(null);
+
   return (
     <>
-      <li className="list-item flex-row spaceB">
+      <li
+        style={{
+          backgroundColor: backgroundColours.bgColor,
+          border: `1px solid ${backgroundColours.borderColor}`,
+        }}
+        className="list-item flex-row spaceB"
+        draggable
+        onDragStart={() => setdragEventItem((DragItem.current = index))}
+        onDragEnter={() => setdragEventOverItem((DragOverItem.current = index))}
+        // onDragEnd={handleSort}
+        onDragOver={(e) => e.preventDefault()}
+      >
         <div className="flex-row gap">
           <div
             style={ButtonCheckStyling(isItemCompleted)}

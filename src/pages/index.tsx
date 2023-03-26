@@ -1,18 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useModeToggle } from "@/components/hooks/useModeToggle";
-import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
+import { useState, useEffect, ChangeEvent, CSSProperties, useRef } from "react";
 import { InputForm } from "@/components/InputForm";
-import { InputList } from "@/components/InputList";
+import { InputItem } from "@/components/InputItem";
 import { useTheme } from "next-themes";
 import { useWHMonitor } from "@/components/hooks/useWHMonitor";
 import { ToDoItem } from "@/components/models/interfaces";
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
   const [task, setTask] = useState("");
   const [todos, settodos] = useState<ToDoItem[]>([]);
-  const [todosFiltered, settodosFiltered] = useState<ToDoItem[]>(todos);
   const { toggleLinkLayout } = useWHMonitor();
   const {
     toggleDarkMode,
@@ -25,6 +23,8 @@ export default function Home() {
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
+  const [dragEventItem, setdragEventItem] = useState<number>();
+  const [dragEventOverItem, setdragEventOverItem] = useState<number>();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -81,14 +81,16 @@ export default function Home() {
         return false;
       }
     })
-    .map((item) => (
-      <InputList
+    .map((item, index) => (
+      <InputItem
         item={item}
         key={item.id}
+        index={index}
         handleCheckItem={handleCheckItem}
         handleDeleteItem={handleDeleteItem}
+        setdragEventItem={setdragEventItem}
+        setdragEventOverItem={setdragEventOverItem}
         backgroundColours={backgroundColours}
-
       />
     ));
 
@@ -112,7 +114,9 @@ export default function Home() {
       </div>
 
       <div className="container grid-center">
-        <div className="card">
+        <div
+          // style={{ backgroundColor: backgroundColours.bgColor }}
+        className="card">
           <div className="input-container flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
@@ -131,7 +135,10 @@ export default function Home() {
 
             {toggleLinkLayout ? (
               <div className="infomation-panel flex-row gap t">
-                <div className="item-count">
+                <div
+                
+                  className="item-count"
+                >
                   <h2>{itemCount} items left</h2>
                 </div>
 
