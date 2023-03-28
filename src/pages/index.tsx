@@ -25,8 +25,8 @@ export default function Home() {
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
-  const [dragEventItem, setdragEventItem] = useState<number>();
-  const [dragEventOverItem, setdragEventOverItem] = useState<number>();
+  const [dragEventItem, setdragEventItem] = useState<any>();
+  const [dragEventOverItem, setdragEventOverItem] = useState<any>();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -83,6 +83,23 @@ export default function Home() {
     }
   });
 
+  const handleSort = () => {
+    const sortedArray = [...filteredItems];
+
+    const draggedItems = sortedArray.splice(dragEventItem, 1)[0];
+    const draggedOverItems = sortedArray.splice(
+      dragEventOverItem,
+      0,
+      draggedItems
+    );
+
+   
+
+    setdragEventItem(0);
+    setdragEventOverItem(0);
+    settodos(sortedArray);
+  };
+
   useEffect(() => {
     const data = localStorage.getItem("todos");
     if (data !== null) {
@@ -92,8 +109,8 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-    console.log(JSON.stringify(todos), "string");
-  }, [todos]);
+    console.log(dragEventItem, dragEventOverItem, "items");
+  }, [dragEventItem, dragEventOverItem, todos]);
 
   const itemCount = filteredItems.length;
 
@@ -115,10 +132,7 @@ export default function Home() {
       </div>
 
       <div className="container grid-center">
-        <div
-          // style={{ backgroundColor: backgroundColours.bgColor }}
-          className="card"
-        >
+        <div className="card">
           <div className="input-container flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
@@ -144,6 +158,7 @@ export default function Home() {
                   setdragEventItem={setdragEventItem}
                   setdragEventOverItem={setdragEventOverItem}
                   backgroundColours={backgroundColours}
+                  handleSort={handleSort}
                 />
               ))}
             </ul>

@@ -9,6 +9,7 @@ import Xsymbol from "/public/images/icon-cross.svg";
 import checkSymbol from "/public/images/icon-check.svg";
 import Image from "next/image";
 import { useRef } from "react";
+import { ToDoItem } from "@/components/models/interfaces";
 
 interface backgroundColour {
   bgColor: string;
@@ -32,6 +33,7 @@ interface InputListProps {
   backgroundColours: backgroundColour;
   setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
   setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
+  handleSort: () => ToDoItem[] | undefined;
 }
 
 export const InputItem = ({
@@ -42,6 +44,7 @@ export const InputItem = ({
   handleDeleteItem,
   setdragEventItem,
   setdragEventOverItem,
+  handleSort,
 }: InputListProps): JSX.Element => {
   const isItemCompleted = item.completed;
 
@@ -76,7 +79,7 @@ export const InputItem = ({
         draggable
         onDragStart={() => setdragEventItem((DragItem.current = index))}
         onDragEnter={() => setdragEventOverItem((DragOverItem.current = index))}
-        // onDragEnd={handleSort}
+        onDragEnd={handleSort}
         onDragOver={(e) => e.preventDefault()}
       >
         <div className="flex-row gap">
