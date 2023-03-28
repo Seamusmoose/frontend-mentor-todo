@@ -20,6 +20,8 @@ export default function Home() {
     backgroundColours,
   } = useModeToggle();
 
+  // console.log(todos);
+
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
@@ -69,30 +71,29 @@ export default function Home() {
     };
   }
 
-  const filteredItems = todos
-    ?.filter((item) => {
-      if (toggleAll) {
-        return true;
-      } else if (toggleActive) {
-        return !item.completed;
-      } else if (toggleCompleted) {
-        return item.completed;
-      } else {
-        return false;
-      }
-    })
-    .map((item, index) => (
-      <InputItem
-        item={item}
-        key={item.id}
-        index={index}
-        handleCheckItem={handleCheckItem}
-        handleDeleteItem={handleDeleteItem}
-        setdragEventItem={setdragEventItem}
-        setdragEventOverItem={setdragEventOverItem}
-        backgroundColours={backgroundColours}
-      />
-    ));
+  const filteredItems = todos?.filter((item) => {
+    if (toggleAll) {
+      return true;
+    } else if (toggleActive) {
+      return !item.completed;
+    } else if (toggleCompleted) {
+      return item.completed;
+    } else {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    const data = localStorage.getItem("todos");
+    if (data !== null) {
+      settodos(JSON.parse(data));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+    console.log(JSON.stringify(todos), "string");
+  }, [todos]);
 
   const itemCount = filteredItems.length;
 
@@ -116,7 +117,8 @@ export default function Home() {
       <div className="container grid-center">
         <div
           // style={{ backgroundColor: backgroundColours.bgColor }}
-        className="card">
+          className="card"
+        >
           <div className="input-container flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
@@ -131,14 +133,24 @@ export default function Home() {
               handleClick={handleClick}
             />
 
-            <ul className="input-current">{filteredItems}</ul>
+            <ul className="input-current">
+              {filteredItems.map((item, index) => (
+                <InputItem
+                  item={item}
+                  key={item.id}
+                  index={index}
+                  handleCheckItem={handleCheckItem}
+                  handleDeleteItem={handleDeleteItem}
+                  setdragEventItem={setdragEventItem}
+                  setdragEventOverItem={setdragEventOverItem}
+                  backgroundColours={backgroundColours}
+                />
+              ))}
+            </ul>
 
             {toggleLinkLayout ? (
               <div className="infomation-panel flex-row gap t">
-                <div
-                
-                  className="item-count"
-                >
+                <div className="item-count">
                   <h2>{itemCount} items left</h2>
                 </div>
 
