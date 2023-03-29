@@ -1,32 +1,34 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useModeToggle } from "@/components/hooks/useModeToggle";
-import { useState, useEffect, ChangeEvent, CSSProperties, useRef } from "react";
+import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
 import { InputForm } from "@/components/InputForm";
 import { InputItem } from "@/components/InputItem";
 import { useTheme } from "next-themes";
 import { useWHMonitor } from "@/components/hooks/useWHMonitor";
 import { ToDoItem } from "@/components/models/interfaces";
+import { useHover } from "@/components/hooks/useHover";
 
 export default function Home() {
   const [task, setTask] = useState("");
   const [todos, settodos] = useState<ToDoItem[]>([]);
   const { toggleLinkLayout } = useWHMonitor();
-  const {
-    toggleDarkMode,
-    toggleIcon,
-    togglebgImageLight,
-    togglebgImageDark,
-    backgroundColours,
-  } = useModeToggle();
-
-  // console.log(todos);
+  const { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark } =
+    useModeToggle();
 
   const [toggleAll, settoggleAll] = useState(false);
   const [toggleActive, settoggleActive] = useState(true);
   const [toggleCompleted, settoggleCompleted] = useState(false);
+
+  const [toggleAllHover, settoggleAllHover] = useState(false);
+  const [toggleActiveHover, settoggleActiveHover] = useState(true);
+  const [toggleCompletedHover, settoggleCompletedHover] = useState(false);
+
+  const [checked, setchecked] = useState(false);
+
   const [dragEventItem, setdragEventItem] = useState<any>();
   const [dragEventOverItem, setdragEventOverItem] = useState<any>();
+  const [onHover, setonHover] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -65,12 +67,6 @@ export default function Home() {
     settoggleCompleted(filter === "completed");
   };
 
-  function getButtonStyle(active: boolean): React.CSSProperties {
-    return {
-      color: active ? "hsl(220, 98%, 61%" : "hsl(236, 9%, 61%)",
-    };
-  }
-
   const filteredItems = todos?.filter((item) => {
     if (toggleAll) {
       return true;
@@ -87,13 +83,7 @@ export default function Home() {
     const sortedArray = [...filteredItems];
 
     const draggedItems = sortedArray.splice(dragEventItem, 1)[0];
-    const draggedOverItems = sortedArray.splice(
-      dragEventOverItem,
-      0,
-      draggedItems
-    );
-
-   
+    sortedArray.splice(dragEventOverItem, 0, draggedItems);
 
     setdragEventItem(0);
     setdragEventOverItem(0);
@@ -109,10 +99,42 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-    console.log(dragEventItem, dragEventOverItem, "items");
-  }, [dragEventItem, dragEventOverItem, todos]);
+  }, [todos]);
 
   const itemCount = filteredItems.length;
+
+  const footerLinkString = ["all", "active", "completed"];
+
+  const handleTitleHover = (title: string) => {
+    console.log(`Hovered over ${title}`);
+    //console.log(title === "active" && !toggleActiveHover, "t");
+
+    settoggleActiveHover(title === "active" && !toggleActiveHover);
+    settoggleAllHover(title === "all" && !toggleAllHover);
+    settoggleCompletedHover(title === "completed" && !toggleCompletedHover);
+  };
+
+  function handleTitleLeave(title: string) {
+    console.log("Left hover");
+    //console.log(title === "active" && !toggleActiveHover, "p");
+
+    settoggleActiveHover(title === "active" && !toggleActiveHover);
+    settoggleAllHover(title === "all" && !toggleAllHover);
+    settoggleCompletedHover(title === "completed" && !toggleCompletedHover);
+  }
+
+  const handleHoverStyling = (title: string): CSSProperties => {
+    console.log(
+      toggleActiveHover,
+      "active",
+      toggleAllHover,
+      "All",
+      toggleCompletedHover,
+      "completed"
+    );
+
+    return {};
+  };
 
   return (
     <>
@@ -157,7 +179,6 @@ export default function Home() {
                   handleDeleteItem={handleDeleteItem}
                   setdragEventItem={setdragEventItem}
                   setdragEventOverItem={setdragEventOverItem}
-                  backgroundColours={backgroundColours}
                   handleSort={handleSort}
                 />
               ))}
@@ -165,12 +186,37 @@ export default function Home() {
 
             {toggleLinkLayout ? (
               <div className="infomation-panel flex-row gap t">
-                <div className="item-count">
-                  <h2>{itemCount} items left</h2>
+                <div>
+                  <h2 className="item-count">{itemCount} items left</h2>
                 </div>
 
-                <button
-                  style={getButtonStyle(toggleAll)}
+                {footerLinkString.map((title: string, key: number) => {
+                  return (
+                    <div key={key}>
+                      <button
+                        className="button-components"
+                        style={handleHoverStyling(title)}
+                        onClick={() => handleFilterClick(title)}
+                        onMouseOver={() => handleTitleHover(title)}
+                        onMouseLeave={() => handleTitleLeave(title)}
+                      >
+                        {title}
+                      </button>
+                    </div>
+                  );
+                })}
+
+                <div className="clear-btn">
+                  <button
+                    className="button-components"
+                    onClick={handleClearItems}
+                  >
+                    clear completed
+                  </button>
+                </div>
+
+                {/* <button
+                  // style={onMouseEnterHover("all")}
                   className="button-components"
                   onClick={() => handleFilterClick("all")}
                 >
@@ -178,7 +224,7 @@ export default function Home() {
                 </button>
 
                 <button
-                  style={getButtonStyle(toggleActive)}
+                  // style={onMouseEnterHover(toggleActive)}
                   className="button-components"
                   onClick={() => handleFilterClick("active")}
                 >
@@ -186,21 +232,13 @@ export default function Home() {
                 </button>
 
                 <button
-                  style={getButtonStyle(toggleCompleted)}
+                  // {...hover}
+                  //style={onMouseEnterHover(toggleCompleted)}
                   className="button-components"
                   onClick={() => handleFilterClick("completed")}
                 >
                   Completed
-                </button>
-
-                <div className="clear-btn">
-                  <button
-                    className="button-components"
-                    onClick={handleClearItems}
-                  >
-                    Clear completed
-                  </button>
-                </div>
+                </button> */}
               </div>
             ) : (
               <>
@@ -223,29 +261,19 @@ export default function Home() {
 
           {!toggleLinkLayout ? (
             <div className="links-container flex-row spaceB">
-              <button
-                style={getButtonStyle(toggleAll)}
-                className="button-components"
-                onClick={() => handleFilterClick("all")}
-              >
-                All
-              </button>
-
-              <button
-                style={getButtonStyle(toggleActive)}
-                className="button-components"
-                onClick={() => handleFilterClick("active")}
-              >
-                Active
-              </button>
-
-              <button
-                style={getButtonStyle(toggleCompleted)}
-                className="button-components"
-                onClick={() => handleFilterClick("completed")}
-              >
-                Completed
-              </button>
+              {footerLinkString.map((title: string, key: number) => {
+                return (
+                  <div key={key}>
+                    <button
+                      //  style={onMouseEnterHover(title)}
+                      className="button-components"
+                      onClick={() => handleFilterClick(title)}
+                    >
+                      {title}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
 

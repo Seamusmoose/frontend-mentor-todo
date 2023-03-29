@@ -15,7 +15,7 @@ export const InputForm = ({
 }: ToDoProps): JSX.Element => {
   return (
     <>
-      <div className="list-item flex-row spaceB gap">
+      <div className="input-list-item flex-row spaceB gap">
         <div className="checkSymbol grid-center">
           <button onClick={handleClick}>
             <Image src={checkSymbol} alt="" />

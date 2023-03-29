@@ -1,22 +1,8 @@
-import React, {
-  CSSProperties,
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-} from "react";
+import React, { CSSProperties, Dispatch, SetStateAction } from "react";
 import Xsymbol from "/public/images/icon-cross.svg";
 import checkSymbol from "/public/images/icon-check.svg";
 import Image from "next/image";
 import { useRef } from "react";
-import { ToDoItem } from "@/components/models/interfaces";
-
-interface backgroundColour {
-  bgColor: string;
-  containerColor: string;
-  textColor: string;
-  borderColor: string;
-}
 
 interface ITask {
   task: string;
@@ -30,16 +16,16 @@ interface InputListProps {
   key: string;
   item: ITask;
   index: number;
-  backgroundColours: backgroundColour;
+
   setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
   setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
-  handleSort: () => ToDoItem[] | undefined;
+  handleSort: () => void;
 }
 
 export const InputItem = ({
   item,
   index,
-  backgroundColours,
+
   handleCheckItem,
   handleDeleteItem,
   setdragEventItem,
@@ -71,10 +57,6 @@ export const InputItem = ({
   return (
     <>
       <li
-        style={{
-          backgroundColor: backgroundColours.bgColor,
-          border: `1px solid ${backgroundColours.borderColor}`,
-        }}
         className="list-item flex-row spaceB"
         draggable
         onDragStart={() => setdragEventItem((DragItem.current = index))}

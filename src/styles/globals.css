@@ -6,7 +6,7 @@
 
   --clr-primary-400: hsl(220, 98%, 61%);
 
-  --clr-grey-100: hsl(0, 0%, 98%);
+  --clr-grey-100: hsl(0, 0%, 98%, 1);
   --clr-grey-200: hsl(236, 33%, 92%);
   --clr-grey-300: hsl(233, 11%, 84%);
   --clr-grey-400: hsl(236, 9%, 61%);
@@ -16,9 +16,11 @@
   --clr-dark-300: hsl(235, 39%, 85%);
   --clr-dark-400: hsl(234, 11%, 52%);
   --clr-dark-500: hsl(233, 14%, 35%);
+  --clr-dark-550: hsla(235, 16%, 42%, 1);
+
   --clr-dark-600: hsl(237, 14%, 26%);
   --clr-dark-700: hsl(235, 24%, 19%);
-  --clr-dark-800: hsl(235, 21%, 11%);
+  --clr-dark-800: hsl(235, 21%, 11%, 1);
 
   --fs-body: 18px;
   --fs-heading: 40px;
@@ -35,14 +37,6 @@
   --clr-active: var(--clr-primary-400);
   --clr-hover: var(--clr-grey-500);
   --clr-inactive: var(--clr-grey-400);
-
-  --background: white;
-  --foreground: black;
-}
-
-[data-theme="dark"] {
-  --background: black;
-  --foreground: white;
 }
 
 /*
@@ -157,6 +151,10 @@ ul {
 
 /* general */
 
+body {
+  background-color: var(--clr-grey-100);
+}
+
 .card {
   min-width: 327px;
   max-width: 540px;
@@ -170,6 +168,14 @@ ul {
 
 .input-current {
   margin-top: 1rem;
+}
+
+.input-list-item {
+  max-height: 48px;
+  border: 1px solid var(--clr-grey-200);
+  background-color: var(--clr-grey-100);
+  color: var(--clr-grey-400);
+  padding: 2rem;
 }
 
 .list-item {
@@ -189,7 +195,6 @@ ul {
 
 .infomation-panel {
   max-height: 48px;
-  border: 1px solid var(--clr-grey-200);
   background-color: var(--clr-grey-100);
   color: var(--clr-grey-400);
   padding: 2rem;
@@ -249,4 +254,50 @@ button {
   border-radius: 1000px;
   width: 30px;
   height: 30px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--clr-dark-800);
+  }
+
+  .list-item {
+    background-color: var(--clr-dark-700);
+    border: 1px solid var(--clr-dark-600);
+    color: var(--clr-dark-300);
+  }
+
+  .input-list-item {
+    background-color: var(--clr-dark-700);
+    border: 1px solid var(--clr-dark-600);
+    color: var(--clr-dark-300);
+  }
+
+  .input-new-item {
+    background-color: var(--clr-dark-700);
+    color: var(--clr-dark-300);
+  }
+
+  .button-components {
+    background-color: var(--clr-dark-700);
+    color: var(--clr-dark-550);
+  }
+
+  .button-components:hover {
+    color: var(--clr-dark-200);
+  }
+
+  .button-components:focus {
+    color: var(--clr-primary-400);
+  }
+
+  .infomation-panel {
+    background-color: var(--clr-dark-700);
+    color: var(--clr-dark-300);
+    border: none;
+  }
+
+  .item-count {
+    color: var(--clr-dark-550);
+  }
 }
