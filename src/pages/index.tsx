@@ -1,7 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useModeToggle } from "@/components/hooks/useModeToggle";
-import { useState, useEffect, ChangeEvent, CSSProperties } from "react";
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  CSSProperties,
+  useCallback,
+} from "react";
 import { InputForm } from "@/components/InputForm";
 import { InputItem } from "@/components/InputItem";
 import { useTheme } from "next-themes";
@@ -13,22 +19,20 @@ export default function Home() {
   const [task, setTask] = useState("");
   const [todos, settodos] = useState<ToDoItem[]>([]);
   const { toggleLinkLayout } = useWHMonitor();
-  const { toggleDarkMode, toggleIcon, togglebgImageLight, togglebgImageDark } =
-    useModeToggle();
+  const {
+    toggleDarkMode,
+    toggleIcon,
+    togglebgImageLight,
+    togglebgImageDark,
+    handleThemeChange,
+  } = useModeToggle();
 
-  const [toggleAll, settoggleAll] = useState(false);
-  const [toggleActive, settoggleActive] = useState(true);
+  const [toggleAll, settoggleAll] = useState(true);
+  const [toggleActive, settoggleActive] = useState(false);
   const [toggleCompleted, settoggleCompleted] = useState(false);
-
-  const [toggleAllHover, settoggleAllHover] = useState(false);
-  const [toggleActiveHover, settoggleActiveHover] = useState(true);
-  const [toggleCompletedHover, settoggleCompletedHover] = useState(false);
-
-  const [checked, setchecked] = useState(false);
 
   const [dragEventItem, setdragEventItem] = useState<any>();
   const [dragEventOverItem, setdragEventOverItem] = useState<any>();
-  const [onHover, setonHover] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -90,51 +94,28 @@ export default function Home() {
     settodos(sortedArray);
   };
 
-  useEffect(() => {
-    const data = localStorage.getItem("todos");
-    if (data !== null) {
-      settodos(JSON.parse(data));
-    }
-  }, []);
+  const [theme, setTheme] = useState("light");
+
+  function toggleTheme() {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  }
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+    // check localStorage for theme on mount
+    const localTheme = localStorage.getItem("theme");
+    if (localTheme) {
+      setTheme(localTheme);
+    } else {
+      // if no theme set in localStorage, default to light
+      localStorage.setItem("theme", "light");
+    }
+  }, []);
 
   const itemCount = filteredItems.length;
 
   const footerLinkString = ["all", "active", "completed"];
-
-  const handleTitleHover = (title: string) => {
-    console.log(`Hovered over ${title}`);
-    //console.log(title === "active" && !toggleActiveHover, "t");
-
-    settoggleActiveHover(title === "active" && !toggleActiveHover);
-    settoggleAllHover(title === "all" && !toggleAllHover);
-    settoggleCompletedHover(title === "completed" && !toggleCompletedHover);
-  };
-
-  function handleTitleLeave(title: string) {
-    console.log("Left hover");
-    //console.log(title === "active" && !toggleActiveHover, "p");
-
-    settoggleActiveHover(title === "active" && !toggleActiveHover);
-    settoggleAllHover(title === "all" && !toggleAllHover);
-    settoggleCompletedHover(title === "completed" && !toggleCompletedHover);
-  }
-
-  const handleHoverStyling = (title: string): CSSProperties => {
-    console.log(
-      toggleActiveHover,
-      "active",
-      toggleAllHover,
-      "All",
-      toggleCompletedHover,
-      "completed"
-    );
-
-    return {};
-  };
 
   return (
     <>
@@ -154,12 +135,18 @@ export default function Home() {
       </div>
 
       <div className="container grid-center">
+        <div style={theme ? { color: "black" } : { color: "white" }}>
+          testing
+        </div>
         <div className="card">
           <div className="input-container flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
               <div className="image-container">
-                <Image src={toggleIcon} width={50} height={50} alt="" />
+                <div>the current mode is: {theme}</div>
+                <button className="test" onClick={toggleTheme}>
+                  {/* <Image src={toggleIcon} width={50} height={50} alt="" /> */}
+                </button>
               </div>
             </div>
 
@@ -180,6 +167,7 @@ export default function Home() {
                   setdragEventItem={setdragEventItem}
                   setdragEventOverItem={setdragEventOverItem}
                   handleSort={handleSort}
+                  toggleDarkMode={toggleDarkMode}
                 />
               ))}
             </ul>
@@ -195,10 +183,7 @@ export default function Home() {
                     <div key={key}>
                       <button
                         className="button-components"
-                        style={handleHoverStyling(title)}
                         onClick={() => handleFilterClick(title)}
-                        onMouseOver={() => handleTitleHover(title)}
-                        onMouseLeave={() => handleTitleLeave(title)}
                       >
                         {title}
                       </button>

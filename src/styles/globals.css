@@ -256,6 +256,17 @@ button {
   height: 30px;
 }
 
+.button-size {
+  height: 20px;
+  width: 20px;
+}
+
+.test {
+  background-color: green;
+  width: 100px;
+  height: 100px;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--clr-dark-800);

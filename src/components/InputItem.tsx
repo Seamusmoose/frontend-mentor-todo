@@ -20,6 +20,7 @@ interface InputListProps {
   setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
   setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
   handleSort: () => void;
+  toggleDarkMode: boolean;
 }
 
 export const InputItem = ({
@@ -31,8 +32,15 @@ export const InputItem = ({
   setdragEventItem,
   setdragEventOverItem,
   handleSort,
+  toggleDarkMode,
 }: InputListProps): JSX.Element => {
   const isItemCompleted = item.completed;
+
+  let image;
+
+  const ButtonImageToggle = (isItemCompleted: boolean): any => {
+    return isItemCompleted ? checkSymbol : "";
+  };
 
   const ButtonCheckStyling = (isItemCompleted: boolean): CSSProperties => {
     return isItemCompleted
@@ -69,8 +77,11 @@ export const InputItem = ({
             style={ButtonCheckStyling(isItemCompleted)}
             className="checkSymbol grid-center"
           >
-            <button onClick={() => handleCheckItem(item.id)}>
-              <Image src={checkSymbol} alt="" />
+            <button
+              className="button-size"
+              onClick={() => handleCheckItem(item.id)}
+            >
+              <Image src={ButtonImageToggle(isItemCompleted)} alt="" />
             </button>
           </div>
           <div style={TextCheckStyling(isItemCompleted)}>{item.task}</div>

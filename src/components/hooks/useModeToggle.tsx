@@ -6,13 +6,24 @@ import bgDayMobileLight from "/public/bg-mobile-light.jpg";
 import nightIcon from "/public/images/icon-moon.svg";
 import dayIcon from "/public/images/icon-sun.svg";
 
-
 export const useModeToggle = () => {
   const [toggleDarkMode, settoggleDarkMode] = useState(false);
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
   const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
+  const [themeState, setthemeState] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const handleThemeChange = () => {
+    setthemeState(!themeState);
+  };
+
+  // useEffect(() => {
+  //   window.localStorage.setItem("theme", JSON.stringify(themeState));
+  // }, [themeState]);
+
+  // console.log(themeState);
 
   useEffect(() => {
     if (window.innerWidth >= 470) {
@@ -54,7 +65,7 @@ export const useModeToggle = () => {
       }
     });
 
-    console.log(localStorage.getItem("theme"));
+    //console.log(localStorage.getItem("theme"));
     return () => clearInterval(interval);
   }, [toggleDarkMode]);
 
@@ -63,6 +74,6 @@ export const useModeToggle = () => {
     toggleIcon,
     togglebgImageLight,
     togglebgImageDark,
-  
+    handleThemeChange,
   };
 };
