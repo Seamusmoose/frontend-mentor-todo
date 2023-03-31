@@ -20,7 +20,7 @@ interface InputListProps {
   setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
   setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
   handleSort: () => void;
-  toggleDarkMode: boolean;
+  darkMode: boolean;
 }
 
 export const InputItem = ({
@@ -32,7 +32,7 @@ export const InputItem = ({
   setdragEventItem,
   setdragEventOverItem,
   handleSort,
-  toggleDarkMode,
+  darkMode,
 }: InputListProps): JSX.Element => {
   const isItemCompleted = item.completed;
 

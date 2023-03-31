@@ -37,6 +37,35 @@
   --clr-active: var(--clr-primary-400);
   --clr-hover: var(--clr-grey-500);
   --clr-inactive: var(--clr-grey-400);
+
+  --clr-primary-background: var(--clr-grey-100);
+  --clr-secondary-background: var(--clr-grey-100);
+
+  --clr-state-border: none;
+  --clr-border-primary: var(--clr-grey-200);
+  --clr-border-secondary: var(--clr-grey-300);
+
+  --clr-text: var(--clr-grey-400);
+  --clr-button-text: var(--clr-grey-400);
+
+  --clr-button-hover: var(--clr-grey-100);
+  --clr-button-focus: var(--clr-primary-400);
+}
+
+[data-theme="dark"] {
+  --clr-primary-background: var(--clr-dark-800);
+  --clr-secondary-background: var(--clr-dark-700);
+
+  --clr-text: var(--clr-dark-300);
+  --clr-button-text: var(--clr-dark-550);
+
+  --clr-button-hover: var(--clr-dark-200);
+  --clr-button-focus: var(--clr-dark-550);
+
+  --clr-border-primary: var(--clr-dark-600);
+  --clr-state-border: none;
+
+  --item-count: var(--clr-dark-550);
 }
 
 /*
@@ -152,7 +181,7 @@ ul {
 /* general */
 
 body {
-  background-color: var(--clr-grey-100);
+  background-color: var(--clr-primary-background);
 }
 
 .card {
@@ -172,17 +201,17 @@ body {
 
 .input-list-item {
   max-height: 48px;
-  border: 1px solid var(--clr-grey-200);
-  background-color: var(--clr-grey-100);
-  color: var(--clr-grey-400);
+  border: 1px solid var(--clr-border-primary);
+  background-color: var(--clr-secondary-background);
+  color: var(--clr-text);
   padding: 2rem;
 }
 
 .list-item {
   max-height: 48px;
-  border: 1px solid var(--clr-grey-200);
-  background-color: var(--clr-grey-100);
-  color: var(--clr-grey-400);
+  border: 1px solid var(--clr-border-primary);
+  background-color: var(--clr-secondary-background);
+  color: var(--clr-text);
   padding: 2rem;
 }
 
@@ -190,14 +219,15 @@ body {
   max-height: 48px;
   width: 100%;
   border: none;
-  background-color: var(--clr-grey-100);
+  background-color: var(--clr-secondary-background);
 }
 
 .infomation-panel {
   max-height: 48px;
-  background-color: var(--clr-grey-100);
-  color: var(--clr-grey-400);
+  background-color: var(--clr-secondary-background);
+  color: var(--clr-text);
   padding: 2rem;
+  border: var(--clr-state-border);
 }
 
 h2 {
@@ -206,7 +236,7 @@ h2 {
 
 h1 {
   font-size: var(--fs-heading);
-  color: var(--clr-grey-100);
+  color: var(--clr-text);
 }
 
 button {
@@ -215,19 +245,28 @@ button {
 }
 
 .button-components {
-  color: var(--clr-grey-400);
+  background-color: var(--clr-secondary-background);
+  color: var(--clr-button-text);
   text-decoration: none;
   min-width: 40px;
 }
 
+.button-components:hover {
+  color: var(--clr-button-hover);
+}
+
+.button-components:focus {
+  color: var(--clr-button-focus);
+}
+
 .links-container {
-  background-color: var(--clr-grey-100);
+  background-color: var(--clr-primary-background);
   margin-top: 2rem;
 }
 
 .drop-p {
   margin-top: 49px;
-  color: var(--clr-grey-400);
+  color: var(--clr-text);
   font-size: var(--fs-links);
 }
 
@@ -261,13 +300,47 @@ button {
   width: 20px;
 }
 
-.test {
-  background-color: green;
-  width: 100px;
-  height: 100px;
+.item-count {
+  color: var(--item-count);
 }
 
 @media (prefers-color-scheme: dark) {
+  :root {
+    --clr-primary-background: var(--clr-dark-800);
+    --clr-secondary-background: var(--clr-dark-700);
+
+    --clr-text: var(--clr-dark-300);
+    --clr-button-text: var(--clr-dark-550);
+
+    --clr-button-hover: var(--clr-dark-200);
+    --clr-button-focus: var(--clr-dark-550);
+
+    --clr-border-primary: var(--clr-dark-600);
+    --clr-state-border: none;
+
+    --item-count: var(--clr-dark-550);
+  }
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --clr-primary-background: var(--clr-dark-800);
+    --clr-secondary-background: var(--clr-dark-700);
+
+    --clr-text: var(--clr-dark-300);
+    --clr-button-text: var(--clr-dark-550);
+
+    --clr-button-hover: var(--clr-dark-200);
+    --clr-button-focus: var(--clr-dark-550);
+
+    --clr-border-primary: var(--clr-dark-600);
+    --clr-border-state: none;
+
+    --item-count: var(--clr-dark-550);
+  }
+} */
+
+/* @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--clr-dark-800);
   }
@@ -311,4 +384,4 @@ button {
   .item-count {
     color: var(--clr-dark-550);
   }
-}
+} */

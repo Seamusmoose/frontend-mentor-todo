@@ -5,25 +5,17 @@ import bgDayMobileDark from "/public/bg-mobile-dark.jpg";
 import bgDayMobileLight from "/public/bg-mobile-light.jpg";
 import nightIcon from "/public/images/icon-moon.svg";
 import dayIcon from "/public/images/icon-sun.svg";
+import { useTheme } from "next-themes";
 
 export const useModeToggle = () => {
-  const [toggleDarkMode, settoggleDarkMode] = useState(false);
+  const [darkMode, setdarkMode] = useState(false);
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
   const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
-  const [themeState, setthemeState] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const { theme, setTheme } = useTheme();
 
-  const handleThemeChange = () => {
-    setthemeState(!themeState);
-  };
-
-  // useEffect(() => {
-  //   window.localStorage.setItem("theme", JSON.stringify(themeState));
-  // }, [themeState]);
-
-  // console.log(themeState);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (window.innerWidth >= 470) {
@@ -47,33 +39,38 @@ export const useModeToggle = () => {
     });
 
     const interval = setInterval(() => {
+      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       const isLight = window.matchMedia(
         "(prefers-color-scheme: light)"
       ).matches;
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-      if (isDark) {
-        localStorage.setItem("theme", "dark");
+      if (isDark || theme === "dark") {
         settoggleIcon(dayIcon);
-        settoggleDarkMode(true);
+        setdarkMode(true);
+      } else if (isLight || theme === "light") {
+        settoggleIcon(nightIcon);
+        setdarkMode(false);
       }
 
-      if (isLight) {
-        localStorage.setItem("theme", "light");
-        settoggleIcon(nightIcon);
-        settoggleDarkMode(false);
-      }
+      // if (theme === "dark") {
+      //   console.log("theme dark");
+      //   settoggleIcon(dayIcon);
+      //   setdarkMode(true);
+      // } else if (theme === "light") {
+      //   settoggleIcon(nightIcon);
+      //   setdarkMode(false);
+      // }
     });
 
-    //console.log(localStorage.getItem("theme"));
     return () => clearInterval(interval);
-  }, [toggleDarkMode]);
+  }, [darkMode, theme]);
 
   return {
-    toggleDarkMode,
+    darkMode,
     toggleIcon,
     togglebgImageLight,
     togglebgImageDark,
-    handleThemeChange,
+    theme,
+    setTheme,
   };
 };

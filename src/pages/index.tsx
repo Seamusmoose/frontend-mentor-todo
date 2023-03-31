@@ -1,42 +1,49 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+
 import { useModeToggle } from "@/components/hooks/useModeToggle";
-import {
-  useState,
-  useEffect,
-  ChangeEvent,
-  CSSProperties,
-  useCallback,
-} from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { InputForm } from "@/components/InputForm";
 import { InputItem } from "@/components/InputItem";
-import { useTheme } from "next-themes";
+
 import { useWHMonitor } from "@/components/hooks/useWHMonitor";
 import { ToDoItem } from "@/components/models/interfaces";
-import { useHover } from "@/components/hooks/useHover";
 
 export default function Home() {
   const [task, setTask] = useState("");
   const [todos, settodos] = useState<ToDoItem[]>([]);
   const { toggleLinkLayout } = useWHMonitor();
   const {
-    toggleDarkMode,
+    darkMode,
     toggleIcon,
     togglebgImageLight,
     togglebgImageDark,
-    handleThemeChange,
+    theme,
+    setTheme,
   } = useModeToggle();
 
+  console.log(theme, "theme on index");
+
+  const [mounted, setMounted] = useState(false);
   const [toggleAll, settoggleAll] = useState(true);
   const [toggleActive, settoggleActive] = useState(false);
   const [toggleCompleted, settoggleCompleted] = useState(false);
-
   const [dragEventItem, setdragEventItem] = useState<any>();
   const [dragEventOverItem, setdragEventOverItem] = useState<any>();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
   };
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   const handleClick = () => {
     if (!task) {
@@ -94,25 +101,6 @@ export default function Home() {
     settodos(sortedArray);
   };
 
-  const [theme, setTheme] = useState("light");
-
-  function toggleTheme() {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  }
-
-  useEffect(() => {
-    // check localStorage for theme on mount
-    const localTheme = localStorage.getItem("theme");
-    if (localTheme) {
-      setTheme(localTheme);
-    } else {
-      // if no theme set in localStorage, default to light
-      localStorage.setItem("theme", "light");
-    }
-  }, []);
-
   const itemCount = filteredItems.length;
 
   const footerLinkString = ["all", "active", "completed"];
@@ -127,7 +115,7 @@ export default function Home() {
       </Head>
 
       <div className="bg-image-wrapper">
-        {toggleDarkMode ? (
+        {darkMode ? (
           <Image className="image" src={togglebgImageDark} alt="" priority />
         ) : (
           <Image className="image" src={togglebgImageLight} alt="" priority />
@@ -135,17 +123,17 @@ export default function Home() {
       </div>
 
       <div className="container grid-center">
-        <div style={theme ? { color: "black" } : { color: "white" }}>
-          testing
-        </div>
         <div className="card">
           <div className="input-container flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
+
               <div className="image-container">
-                <div>the current mode is: {theme}</div>
-                <button className="test" onClick={toggleTheme}>
-                  {/* <Image src={toggleIcon} width={50} height={50} alt="" /> */}
+                <button
+                  className="test"
+                  onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                >
+                  <Image src={toggleIcon} width={50} height={50} alt="" />
                 </button>
               </div>
             </div>
@@ -167,7 +155,7 @@ export default function Home() {
                   setdragEventItem={setdragEventItem}
                   setdragEventOverItem={setdragEventOverItem}
                   handleSort={handleSort}
-                  toggleDarkMode={toggleDarkMode}
+                  darkMode={darkMode}
                 />
               ))}
             </ul>
@@ -199,31 +187,6 @@ export default function Home() {
                     clear completed
                   </button>
                 </div>
-
-                {/* <button
-                  // style={onMouseEnterHover("all")}
-                  className="button-components"
-                  onClick={() => handleFilterClick("all")}
-                >
-                  All
-                </button>
-
-                <button
-                  // style={onMouseEnterHover(toggleActive)}
-                  className="button-components"
-                  onClick={() => handleFilterClick("active")}
-                >
-                  Active
-                </button>
-
-                <button
-                  // {...hover}
-                  //style={onMouseEnterHover(toggleCompleted)}
-                  className="button-components"
-                  onClick={() => handleFilterClick("completed")}
-                >
-                  Completed
-                </button> */}
               </div>
             ) : (
               <>
