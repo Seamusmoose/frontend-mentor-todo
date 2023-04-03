@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ChangeEvent } from "react";
-import checkSymbol from "/public/images/icon-check.svg";
+import checkSymbol from "/public/icon-check.svg";
 
 interface ToDoProps {
   handleClick: () => void;

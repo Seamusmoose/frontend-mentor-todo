@@ -46,9 +46,10 @@
   --clr-border-secondary: var(--clr-grey-300);
 
   --clr-text: var(--clr-grey-400);
+  --clr-heading-text: var(--clr-grey-100);
   --clr-button-text: var(--clr-grey-400);
 
-  --clr-button-hover: var(--clr-grey-100);
+  --clr-button-hover: var(--clr-grey-500);
   --clr-button-focus: var(--clr-primary-400);
 }
 
@@ -59,7 +60,7 @@
   --clr-text: var(--clr-dark-300);
   --clr-button-text: var(--clr-dark-550);
 
-  --clr-button-hover: var(--clr-dark-200);
+  --clr-button-hover: var(--clr-grey-100);
   --clr-button-focus: var(--clr-dark-550);
 
   --clr-border-primary: var(--clr-dark-600);
@@ -236,7 +237,7 @@ h2 {
 
 h1 {
   font-size: var(--fs-heading);
-  color: var(--clr-text);
+  color: var(--clr-heading-text);
 }
 
 button {

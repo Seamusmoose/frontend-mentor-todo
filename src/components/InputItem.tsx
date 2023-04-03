@@ -1,6 +1,6 @@
 import React, { CSSProperties, Dispatch, SetStateAction } from "react";
-import Xsymbol from "/public/images/icon-cross.svg";
-import checkSymbol from "/public/images/icon-check.svg";
+import Xsymbol from "/public/icon-cross.svg";
+import CheckSymbol from "/public/icon-check.svg";
 import Image from "next/image";
 import { useRef } from "react";
 
@@ -39,7 +39,7 @@ export const InputItem = ({
   let image;
 
   const ButtonImageToggle = (isItemCompleted: boolean): any => {
-    return isItemCompleted ? checkSymbol : "";
+    return isItemCompleted ? CheckSymbol : "";
   };
 
   const ButtonCheckStyling = (isItemCompleted: boolean): CSSProperties => {
@@ -81,14 +81,22 @@ export const InputItem = ({
               className="button-size"
               onClick={() => handleCheckItem(item.id)}
             >
-              <Image src={ButtonImageToggle(isItemCompleted)} alt="" />
+              {/* <Image src={CheckSymbol} alt="" /> */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9">
+                <path
+                  fill="none"
+                  stroke="#FFF"
+                  stroke-width="2"
+                  d="M1 4.304L3.696 7l6-6"
+                />
+              </svg>
             </button>
           </div>
           <div style={TextCheckStyling(isItemCompleted)}>{item.task}</div>
         </div>
         <div className="XSymbol grid-center">
           <button onClick={() => handleDeleteItem(item.id)}>
-            <Image src={Xsymbol} alt="" />
+            <Image src={Xsymbol} width={20} height={20} alt="" />
           </button>
         </div>
       </li>

@@ -23,7 +23,7 @@ export default function Home() {
     setTheme,
   } = useModeToggle();
 
-  console.log(theme, "theme on index");
+  // to do: find out why localStorage is no longer persisting
 
   const [mounted, setMounted] = useState(false);
   const [toggleAll, settoggleAll] = useState(true);
@@ -31,6 +31,17 @@ export default function Home() {
   const [toggleCompleted, settoggleCompleted] = useState(false);
   const [dragEventItem, setdragEventItem] = useState<any>();
   const [dragEventOverItem, setdragEventOverItem] = useState<any>();
+
+  useEffect(() => {
+    const data = localStorage.getItem("todos");
+    if (data !== null) {
+      settodos(JSON.parse(data));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -130,7 +141,6 @@ export default function Home() {
 
               <div className="image-container">
                 <button
-                  className="test"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
                   <Image src={toggleIcon} width={50} height={50} alt="" />
