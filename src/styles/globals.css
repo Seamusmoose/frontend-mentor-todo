@@ -282,6 +282,11 @@ button {
   width: 100vw;
 }
 
+.check-container {
+  width: auto;
+  height: auto;
+}
+
 .checkSymbol {
   border-radius: 1000px;
   /* background: linear-gradient(135deg, #558cff 0%, #c058f3 100%); */

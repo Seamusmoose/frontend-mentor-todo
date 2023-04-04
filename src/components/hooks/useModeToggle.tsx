@@ -15,7 +15,7 @@ export const useModeToggle = () => {
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
   const { theme, setTheme } = useTheme();
 
-  // console.log(toggleIcon, "toggle");
+
 
   useEffect(() => {
     if (window.innerWidth >= 470) {
