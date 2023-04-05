@@ -81,7 +81,13 @@ export const InputItem = ({
               className="button-size"
               onClick={() => handleCheckItem(item.id)}
             >
-              <Image className="check-container" src={CheckSymbol} alt="" />
+              <CheckSymbol
+                className="check-container"
+                // src={CheckSymbol}
+                width={20}
+                height={20}
+                alt=""
+              />
             </button>
           </div>
           <div style={TextCheckStyling(isItemCompleted)}>{item.task}</div>
