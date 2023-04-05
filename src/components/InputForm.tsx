@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ChangeEvent } from "react";
-import CheckSymbol from "/public/icon-check.svg";
+import checkSymbol from "/public/icon-check.svg";
 
 interface ToDoProps {
   handleClick: () => void;
@@ -18,11 +18,7 @@ export const InputForm = ({
       <div className="input-list-item flex-row spaceB gap">
         <div className="checkSymbol grid-center">
           <button onClick={handleClick}>
-            <CheckSymbol
-              className="check-container"
-              // src={CheckSymbol}
-              alt=""
-            />
+            <Image src={checkSymbol} alt="" />
           </button>
         </div>
 
