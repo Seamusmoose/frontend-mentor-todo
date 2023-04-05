@@ -283,8 +283,9 @@ button {
 }
 
 .check-container {
-  width: auto;
-  height: auto;
+  width: 400px;
+  height: 20px;
+  background-color: red;
 }
 
 .checkSymbol {
