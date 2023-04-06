@@ -13,17 +13,22 @@ export const useModeToggle = () => {
   const [toggleIcon, settoggleIcon] = useState(dayIcon);
   const [togglebgImageLight, settogglebgImageLight] = useState(bgDayLight);
   const [togglebgImageDark, settogglebgImageDark] = useState(bgDayDark);
+  const [buttonSize, setbuttonSize] = useState<string>();
+  const [checkSize, setcheckSize] = useState<string>();
+
   const { theme, setTheme } = useTheme();
-
-
 
   useEffect(() => {
     if (window.innerWidth >= 470) {
       settogglebgImageLight(bgDayLight);
+      setbuttonSize("button-size");
+      setcheckSize("check-size");
     }
 
     if (window.innerWidth <= 470) {
       settogglebgImageLight(bgDayMobileLight);
+      setbuttonSize("button-size-mobile");
+      setcheckSize("check-size-mobile");
     }
 
     window.addEventListener("resize", () => {
@@ -63,5 +68,7 @@ export const useModeToggle = () => {
     togglebgImageDark,
     theme,
     setTheme,
+    buttonSize,
+    checkSize,
   };
 };

@@ -16,6 +16,8 @@ interface InputListProps {
   key: string;
   item: ITask;
   index: number;
+  buttonSize: string | undefined;
+  checkSize: string | undefined;
 
   setdragEventOverItem: Dispatch<SetStateAction<number | undefined>>;
   setdragEventItem: Dispatch<SetStateAction<number | undefined>>;
@@ -26,20 +28,22 @@ interface InputListProps {
 export const InputItem = ({
   item,
   index,
-
   handleCheckItem,
   handleDeleteItem,
   setdragEventItem,
   setdragEventOverItem,
   handleSort,
-  darkMode,
+  buttonSize,
+  checkSize,
 }: InputListProps): JSX.Element => {
   const isItemCompleted = item.completed;
+
+  console.log(buttonSize, "bs", checkSize, "ch");
 
   let image;
 
   const ButtonImageToggle = (isItemCompleted: boolean): any => {
-    return isItemCompleted ? CheckSymbol : "";
+    return isItemCompleted ? Xsymbol : "";
   };
 
   const ButtonCheckStyling = (isItemCompleted: boolean): CSSProperties => {
@@ -78,23 +82,20 @@ export const InputItem = ({
             className="checkSymbol grid-center"
           >
             <button
-              className="button-size"
+              className={`${buttonSize}`}
               onClick={() => handleCheckItem(item.id)}
             >
-              <Image className="check-container" src={CheckSymbol} alt="" />
+              <Image className="image-container" src={CheckSymbol} alt="" />
             </button>
           </div>
           <div style={TextCheckStyling(isItemCompleted)}>{item.task}</div>
         </div>
-        <div className="XSymbol grid-center">
-          <button onClick={() => handleDeleteItem(item.id)}>
-            <Image
-              className="check-container"
-              src={Xsymbol}
-              width={20}
-              height={20}
-              alt=""
-            />
+        <div className="XSymbol grid-center ">
+          <button
+            className={`${checkSize} g`}
+            onClick={() => handleDeleteItem(item.id)}
+          >
+            <Image className="check-container" src={Xsymbol} alt="" />
           </button>
         </div>
       </li>

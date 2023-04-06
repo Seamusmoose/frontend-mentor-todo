@@ -285,6 +285,7 @@ button {
 .check-container {
   width: auto;
   height: auto;
+  z-index: 1;
 }
 
 .checkSymbol {
@@ -304,6 +305,26 @@ button {
 .button-size {
   height: 20px;
   width: 20px;
+}
+
+.button-size-mobile {
+  height: 40px;
+  width: 40px;
+}
+
+.check-size {
+  width: 25px;
+  height: 25px;
+}
+
+.check-size-mobile {
+  width: 50px;
+  height: 50px;
+}
+
+.g {
+  width: 50px;
+  height: 50px;
 }
 
 .item-count {

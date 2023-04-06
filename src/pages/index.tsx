@@ -2,6 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
+import Xsymbol from "/public/icon-cross.svg";
+
 import { useModeToggle } from "@/components/hooks/useModeToggle";
 import { useState, ChangeEvent, useEffect } from "react";
 import { InputForm } from "@/components/InputForm";
@@ -21,6 +23,8 @@ export default function Home() {
     togglebgImageDark,
     theme,
     setTheme,
+    buttonSize,
+    checkSize,
   } = useModeToggle();
 
   // to do: find out why localStorage is no longer persisting
@@ -139,7 +143,7 @@ export default function Home() {
             <div className="flex-row spaceB">
               <h1>To Do</h1>
 
-              <div className="image-container">
+              <div>
                 <button
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
@@ -166,6 +170,8 @@ export default function Home() {
                   setdragEventOverItem={setdragEventOverItem}
                   handleSort={handleSort}
                   darkMode={darkMode}
+                  buttonSize={buttonSize}
+                  checkSize={checkSize}
                 />
               ))}
             </ul>
