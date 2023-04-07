@@ -92,7 +92,7 @@ export const InputItem = ({
         </div>
         <div className="XSymbol grid-center ">
           <button
-            className={`${checkSize} g`}
+            className={`${checkSize}`}
             onClick={() => handleDeleteItem(item.id)}
           >
             <Image className="check-container" src={Xsymbol} alt="" />

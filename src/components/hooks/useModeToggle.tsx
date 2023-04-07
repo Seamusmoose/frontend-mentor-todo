@@ -27,6 +27,7 @@ export const useModeToggle = () => {
 
     if (window.innerWidth <= 470) {
       settogglebgImageLight(bgDayMobileLight);
+      settogglebgImageDark(bgDayMobileDark);
       setbuttonSize("button-size-mobile");
       setcheckSize("check-size-mobile");
     }

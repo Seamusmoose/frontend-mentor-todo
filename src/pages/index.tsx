@@ -2,8 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
-import Xsymbol from "/public/icon-cross.svg";
-
 import { useModeToggle } from "@/components/hooks/useModeToggle";
 import { useState, ChangeEvent, useEffect } from "react";
 import { InputForm } from "@/components/InputForm";
@@ -139,7 +137,7 @@ export default function Home() {
 
       <div className="container grid-center">
         <div className="card">
-          <div className="input-container flex-column">
+          <div className="dropShadow flex-column">
             <div className="flex-row spaceB">
               <h1>To Do</h1>
 
@@ -182,18 +180,20 @@ export default function Home() {
                   <h2 className="item-count">{itemCount} items left</h2>
                 </div>
 
-                {footerLinkString.map((title: string, key: number) => {
-                  return (
-                    <div key={key}>
-                      <button
-                        className="button-components"
-                        onClick={() => handleFilterClick(title)}
-                      >
-                        {title}
-                      </button>
-                    </div>
-                  );
-                })}
+                <div className="button-container">
+                  {footerLinkString.map((title: string, key: number) => {
+                    return (
+                      <div key={key}>
+                        <button
+                          className="button-components"
+                          onClick={() => handleFilterClick(title)}
+                        >
+                          {title}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
 
                 <div className="clear-btn">
                   <button
@@ -224,7 +224,7 @@ export default function Home() {
           </div>
 
           {!toggleLinkLayout ? (
-            <div className="links-container flex-row spaceB">
+            <div className="links-container flex-row boxShadow">
               {footerLinkString.map((title: string, key: number) => {
                 return (
                   <div key={key}>
